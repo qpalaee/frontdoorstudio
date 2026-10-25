@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reveal 2 · After scroll</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500&amp;family=Jost:wght@300;400;500&amp;family=IBM+Plex+Mono:wght@400&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#F6DBAE}a:hover{color:#FFF4DC}
+.h-bg{background-color:#050403;background-image:url(../assets/hero-light-column.png);background-repeat:no-repeat;background-size:cover;background-position:center bottom}
+.lid{background:linear-gradient(180deg,#24221F,#141210);border-radius:22px 22px 0 0;padding:14px 14px 20px;border:1px solid rgba(246,219,174,0.20);border-bottom:0;box-shadow:0 0 0 1px rgba(0,0,0,0.6),0 -20px 120px rgba(232,184,119,0.20)}
+.base{position:relative;height:16px;margin-inline:-60px;border-radius:0 0 16px 16px;background:linear-gradient(180deg,#3A3631 0%,#24211E 60%,#121110 100%);box-shadow:0 30px 60px -10px rgba(0,0,0,0.9),0 -1px 0 rgba(246,219,174,0.25) inset}
+@media (max-width:860px){.hide-m{display:none !important}.base{margin-inline:-10px !important}}
+</style>
+</helmet>
+
+<section class="h-bg" style="position: relative; overflow: hidden; min-height: 900px; color: #EFE8DE; font-family: 'Jost', Arial, sans-serif; font-weight: 300; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; padding: 40px 24px 56px;">
+
+  <!-- the door, opened wider: a broad column of light behind the laptop -->
+  <div aria-hidden="true" style="position: absolute; left: 50%; top: 0; bottom: 0; width: 760px; margin-left: -380px; background: linear-gradient(90deg, rgba(232,184,119,0) 0%, rgba(232,184,119,0.10) 30%, rgba(246,219,174,0.16) 50%, rgba(232,184,119,0.10) 70%, rgba(232,184,119,0) 100%); filter: blur(30px);"></div>
+
+  <!-- laptop -->
+  <figure style="position: relative; width: 1040px; max-width: 100%; margin: 0;">
+    <div class="lid">
+      <img src="../assets/stomatolog-screenshot.png" alt="Stomatolog website homepage: Dentistry, as calm as it is exact." style="display: block; width: 100%; height: auto; border-radius: 6px;">
+    </div>
+    <div class="base">
+      <div style="position: absolute; left: 50%; top: 0; width: 130px; height: 6px; margin-left: -65px; border-radius: 0 0 8px 8px; background: #0E0D0C;"></div>
+    </div>
+  </figure>
+
+  <!-- caption -->
+  <div style="position: relative; margin-top: 40px; display: flex; gap: 28px; align-items: baseline; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #9C9286;">
+    <span style="font-family: 'Unbounded', Arial, sans-serif; font-size: 18px; letter-spacing: 0; text-transform: none; color: #F4EEE4;">Stomatolog</span>
+    <span>Dental clinic</span>
+    <span>Concept</span>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

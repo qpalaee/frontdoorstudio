@@ -1,0 +1,28 @@
+/* Design tokens: every color, font and shared size lives here,
+   so the rest of the CSS never repeats a raw value. */
+:root {
+  /* Colors */
+  --bg: #050403; /* matches the black of the hero image, so its edges disappear */
+  --ink: #f4eee4;
+  --ink-2: #d9cfc2;
+  --ink-3: #9c9286;
+  --gold: #d4a867;
+  --gold-soft: #e8c48a;
+  --gold-light: #f2c07a; /* accent: links, Contact (warmer, matches the desert light) */
+  --gold-white: #ffe7c2; /* link hover, button text */
+  --amber-rgb: 240 168 80; /* the orange light of the desert image, used in glows */
+
+  /* Fonts */
+  --font-display: 'Unbounded', 'Arial', sans-serif;
+  --font-body: 'Jost', 'Arial', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Layout */
+  --page-max: 1240px;
+  --gutter: 24px;
+  --header-h: 92px; /* 24px padding + 44px row + 24px padding */
+
+  /* Motion: one easing family for the whole site (CSS side of power2.out) */
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+  --duration-fast: 200ms;
+}

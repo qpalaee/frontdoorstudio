@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Frontdoor Studio · Websites and social media in Morocco</title>
+    <meta name="description" content="Websites and social media for businesses in Morocco." />
+    <meta name="theme-color" content="#050403" />
+
+    <!-- Tells the CSS that JavaScript is running, before the first paint.
+         Without it the laptop would flash on screen before main.js hides it.
+         Also hides the intro right away if it already played this session,
+         so returning visitors never see a black flash. -->
+    <script>
+      document.documentElement.classList.add('js');
+      try {
+        if (sessionStorage.getItem('fd-intro-played')) document.documentElement.classList.add('intro-off');
+      } catch (e) {}
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Jost:wght@300;400&family=Unbounded:wght@500;600&display=swap"
+    />
+
+    <!-- The hero background is the first thing people see: start downloading it
+         right away. Same files and sizes as the <picture> below, so it is not fetched twice. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      imagesrcset="/assets/images/hero-desert-door-828.avif 828w, /assets/images/hero-desert-door-1280.avif 1280w, /assets/images/hero-desert-door-1672.avif 1672w"
+      imagesizes="178vh"
+      fetchpriority="high"
+    />
+
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <script type="module" src="/src/main.js"></script>
+  </head>
+
+  <body>
+    <!-- Intro: black screen, a line of light grows and opens, then hands off to the hero photo. -->
+    <div class="intro-stage" aria-hidden="true"></div>
+    <div class="intro-bloom" aria-hidden="true"></div>
+    <div class="intro-beam" aria-hidden="true"></div>
+    <button class="intro-skip" type="button">Skip</button>
+
+    <!-- The scene is the part that gets pinned on desktop. The header lives inside it
+         so it stays on screen while the light opens. -->
+    <div class="scene" id="top" data-scene>
+      <picture class="scene__bg" aria-hidden="true" data-scene-bg>
+        <source
+          type="image/avif"
+          srcset="/assets/images/hero-desert-door-828.avif 828w, /assets/images/hero-desert-door-1280.avif 1280w, /assets/images/hero-desert-door-1672.avif 1672w"
+          sizes="178vh"
+        />
+        <source
+          type="image/webp"
+          srcset="/assets/images/hero-desert-door-828.webp 828w, /assets/images/hero-desert-door-1280.webp 1280w, /assets/images/hero-desert-door-1672.webp 1672w"
+          sizes="178vh"
+        />
+        <img
+          class="scene__bg-img"
+          src="/assets/images/hero-desert-door-1672.jpg"
+          srcset="/assets/images/hero-desert-door-828.jpg 828w, /assets/images/hero-desert-door-1280.jpg 1280w, /assets/images/hero-desert-door-1672.jpg 1672w"
+          sizes="178vh"
+          width="1672"
+          height="941"
+          alt=""
+          fetchpriority="high"
+        />
+      </picture>
+
+      <header class="site-header" role="banner">
+        <div class="site-header__inner">
+          <a class="site-header__logo" href="#top" aria-label="Frontdoor Studio home">
+            <img src="/assets/logo-horizontal-dark.svg" alt="" width="192" height="40" />
+          </a>
+          <nav class="site-nav" aria-label="Main">
+            <ul class="site-nav__list">
+              <li><a class="site-nav__link" href="#work">Work</a></li>
+              <li><a class="site-nav__link" href="#services">Services</a></li>
+              <li><a class="site-nav__link" href="#process">Process</a></li>
+              <li><a class="site-nav__link" href="#studio">Studio</a></li>
+            </ul>
+          </nav>
+          <a class="site-header__contact" href="#contact">Contact</a>
+        </div>
+      </header>
+
+      <section class="hero" aria-labelledby="hero-title">
+        <!-- First screen: the heading sits in the sky, the button on the sand.
+             They fade out together, so they share one wrapper. -->
+        <div class="hero__intro" data-hero-intro>
+          <div class="hero__heading">
+            <h1 class="hero__title" id="hero-title">Your door<br />to the internet.</h1>
+            <p class="hero__lead">Websites and social media for businesses in Morocco.</p>
+          </div>
+          <a class="glass-button hero__cta" href="#contact">Start your site</a>
+        </div>
+
+        <div class="hero__work" id="work" data-hero-work>
+          <!-- The door, opened wider: a broad column of light behind the laptop. -->
+          <div class="hero__glow" aria-hidden="true" data-hero-glow></div>
+
+          <figure class="hero__showcase">
+            <div class="laptop" data-hero-laptop>
+              <div class="laptop__lid">
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcset="/assets/images/stomatolog-640.avif 640w, /assets/images/stomatolog-1040.avif 1040w, /assets/images/stomatolog-1560.avif 1560w, /assets/images/stomatolog-2080.avif 2080w"
+                    sizes="(max-width: 1100px) calc(100vw - 80px), 1010px"
+                  />
+                  <source
+                    type="image/webp"
+                    srcset="/assets/images/stomatolog-640.webp 640w, /assets/images/stomatolog-1040.webp 1040w, /assets/images/stomatolog-1560.webp 1560w, /assets/images/stomatolog-2080.webp 2080w"
+                    sizes="(max-width: 1100px) calc(100vw - 80px), 1010px"
+                  />
+                  <!-- Not loading="lazy": the laptop sits inside the pinned scene, and a lazy
+                       image could still be empty when the animation shows it.
+                       fetchpriority="low" lets the hero background go first instead. -->
+                  <img
+                    class="laptop__screen"
+                    src="/assets/images/stomatolog-1040.jpg"
+                    srcset="/assets/images/stomatolog-640.jpg 640w, /assets/images/stomatolog-1040.jpg 1040w, /assets/images/stomatolog-1560.jpg 1560w, /assets/images/stomatolog-2080.jpg 2080w"
+                    sizes="(max-width: 1100px) calc(100vw - 80px), 1010px"
+                    width="2940"
+                    height="1664"
+                    alt="Stomatolog website homepage"
+                    fetchpriority="low"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
+              <div class="laptop__base" aria-hidden="true"></div>
+            </div>
+
+            <figcaption class="work-caption" data-hero-caption>
+              <span class="work-caption__name">Stomatolog</span>
+              <span class="work-caption__meta">Dental clinic</span>
+              <span class="work-caption__meta">Concept</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    </div>
+
+    <main id="main">
+      <!-- Services and Process share one background and one light that travels
+           from under the cards to the start of the process line. -->
+      <div class="light-scene">
+        <div class="light-travel" aria-hidden="true"></div>
+
+        <section class="services" id="services" aria-labelledby="services-title">
+          <p class="services__eyebrow">02 · What we do</p>
+          <h2 class="services__word" id="services-title">SERVICES</h2>
+
+          <div class="services__cards">
+          <article class="services__card">
+            <h3 class="services__card-title">Website</h3>
+            <p class="services__card-desc">Your business, open online.</p>
+            <div class="services__price">
+              <p class="services__price-label">From</p>
+              <p class="services__price-amount">2,900 <span class="services__price-currency">MAD</span></p>
+              <p class="services__price-note">One-time</p>
+            </div>
+            <ul class="services__list">
+              <li class="services__item">Custom design, made for you</li>
+              <li class="services__item">Fast on every phone</li>
+              <li class="services__item">WhatsApp and map built in</li>
+            </ul>
+            <a class="services__button" href="#contact">Start your site</a>
+          </article>
+          <article class="services__card is-featured">
+            <p class="services__badge">Best value</p>
+            <h3 class="services__card-title">Website + Social</h3>
+            <p class="services__card-desc">Open online, and seen every week.</p>
+            <div class="services__price">
+              <p class="services__price-label">Site + monthly</p>
+              <p class="services__price-amount">2,500 <span class="services__price-currency">MAD</span></p>
+              <p class="services__price-note">+ 1,800 MAD / month · 3-month minimum</p>
+            </div>
+            <ul class="services__list">
+              <li class="services__item">Everything in Website</li>
+              <li class="services__item">Everything in Social media</li>
+              <li class="services__item">One team, one look everywhere</li>
+            </ul>
+            <a class="services__button services__button--solid" href="#contact">Start with both</a>
+          </article>
+          <article class="services__card">
+            <h3 class="services__card-title">Social media</h3>
+            <p class="services__card-desc">Your page, looked after.</p>
+            <div class="services__price">
+              <p class="services__price-label">From</p>
+              <p class="services__price-amount">1,800 <span class="services__price-currency">MAD</span></p>
+              <p class="services__price-note">Per month</p>
+            </div>
+            <ul class="services__list">
+              <li class="services__item">A content plan every month</li>
+              <li class="services__item">Posts designed and published</li>
+              <li class="services__item">Your page managed for you</li>
+            </ul>
+            <a class="services__button" href="#contact">Start your page</a>
+          </article>
+          </div>
+
+          <div class="services__footer">
+            <p class="services__maintenance">Hosting &amp; maintenance · 300 MAD / month</p>
+            <a class="services__more" href="#plans">See all plans →</a>
+          </div>
+        </section>
+
+        <section class="process" id="process" aria-labelledby="process-title">
+          <div class="process__inner">
+            <div class="process__head">
+              <div>
+                <p class="process__eyebrow">03 · How we work</p>
+                <h2 class="process__heading" id="process-title">Four steps.<br />No surprises.</h2>
+              </div>
+              <p class="process__lead">You always know where your site is, and what comes next.</p>
+            </div>
+
+            <div class="process__line">
+              <div class="process__track" aria-hidden="true"></div>
+              <div class="process__lit" aria-hidden="true"></div>
+              <ol class="process__steps">
+                <li class="process__step">
+                  <span class="process__dot" aria-hidden="true"><i></i></span>
+                  <p class="process__num">01</p>
+                  <h3 class="process__title">Listen</h3>
+                  <p class="process__text">We learn your business, your clients and what you need the site to do.</p>
+                </li>
+                <li class="process__step">
+                  <span class="process__dot" aria-hidden="true"><i></i></span>
+                  <p class="process__num">02</p>
+                  <h3 class="process__title">Design</h3>
+                  <p class="process__text">You see every page before we build it, and approve it.</p>
+                </li>
+                <li class="process__step">
+                  <span class="process__dot" aria-hidden="true"><i></i></span>
+                  <p class="process__num">03</p>
+                  <h3 class="process__title">Build</h3>
+                  <p class="process__text">Fast, light, and ready for Google.</p>
+                </li>
+                <li class="process__step">
+                  <span class="process__dot" aria-hidden="true"><i></i></span>
+                  <p class="process__num">04</p>
+                  <h3 class="process__title">Launch</h3>
+                  <p class="process__text">Your site goes live, and we keep it running.</p>
+                </li>
+              </ol>
+            </div>
+
+            <a class="process__cta" href="#contact">Start with step one →</a>
+          </div>
+        </section>
+      </div>
+
+      <section class="studio" id="studio" aria-labelledby="studio-title">
+        <div class="studio__inner">
+          <div class="studio__text">
+            <p class="studio__eyebrow">04 · The studio</p>
+            <h2 class="studio__title" id="studio-title">Two people.<br />One studio.</h2>
+            <p class="studio__lead">
+              No account managers, no middlemen. You talk directly to the two people who design, build
+              and post for your business.
+            </p>
+            <a class="studio__link" href="#contact">Talk to us →</a>
+          </div>
+
+          <div class="studio__team">
+            <figure class="studio__member">
+              <div class="studio__photo studio__photo--alae">
+                <!-- Photo goes here later: <img src="..." alt="" width="800" height="1000" /> -->
+                <span class="studio__placeholder">[Photo · Alae]</span>
+                <span class="studio__light" aria-hidden="true"></span>
+              </div>
+              <figcaption class="studio__caption">
+                <span class="studio__name">Alae Lakhdari</span>
+                <span class="studio__role">Websites</span>
+                <span class="studio__line">Designs and codes every site, from the first sketch to launch.</span>
+              </figcaption>
+            </figure>
+            <figure class="studio__member">
+              <div class="studio__photo studio__photo--laila">
+                <!-- Photo goes here later: <img src="..." alt="" width="800" height="1000" /> -->
+                <span class="studio__placeholder">[Photo · Laila]</span>
+                <span class="studio__light" aria-hidden="true"></span>
+              </div>
+              <figcaption class="studio__caption">
+                <span class="studio__name">Laila</span>
+                <span class="studio__role">Social media</span>
+                <span class="studio__line">Plans, designs and publishes your content every month.</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <!-- Covers the background at first; fades out with the scroll ("the night lifts"). -->
+        <div class="contact__shade" aria-hidden="true"></div>
+
+        <div class="contact__text">
+          <p class="contact__eyebrow">05 · Contact</p>
+          <h2 class="contact__title" id="contact-title">Ready to open your door?</h2>
+          <p class="contact__lead">Tell us about your business on WhatsApp. We reply within a day.</p>
+        </div>
+
+        <div class="contact__actions">
+          <a class="contact__whatsapp" href="{{link.whatsapp}}" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3.5 20.5l1.4-4.1A8.5 8.5 0 1 1 8.3 19.4z" />
+              <path d="M9.2 8.6c.2-.5.6-.6.9-.6h.5c.2 0 .4.1.5.4l.6 1.5c.1.2 0 .5-.1.7l-.5.6c.6 1.2 1.6 2.2 2.8 2.8l.6-.5c.2-.2.5-.2.7-.1l1.5.6c.3.1.4.3.4.5v.5c0 .3-.1.7-.6.9-.7.3-1.9.4-3.7-.9a9.6 9.6 0 0 1-2.8-2.8c-1.3-1.8-1.2-3-.8-3.7z" />
+            </svg>
+            Message us on WhatsApp
+          </a>
+
+          <dl class="contact__details">
+            <div class="contact__detail">
+              <dt class="contact__label">WhatsApp</dt>
+              <dd class="contact__value">{{site.whatsappNumber}}</dd>
+            </div>
+            <div class="contact__detail">
+              <dt class="contact__label">Email</dt>
+              <dd class="contact__value">{{site.email}}</dd>
+            </div>
+            <div class="contact__detail">
+              <dt class="contact__label">Instagram</dt>
+              <dd class="contact__value">
+                <a href="{{link.instagram}}" target="_blank" rel="noopener">{{site.instagram}}</a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__top">
+        <a class="footer__logo" href="#top" aria-label="Frontdoor Studio home">
+          <img src="/assets/logo-horizontal-dark.svg" alt="" width="163" height="34" />
+        </a>
+        <nav class="footer__nav" aria-label="Footer">
+          <a href="#work">Work</a>
+          <a href="#services">Services</a>
+          <a href="#studio">Studio</a>
+          <a href="#contact">Contact</a>
+          <a href="{{link.instagram}}" target="_blank" rel="noopener">Instagram</a>
+        </nav>
+        <p class="footer__meta">Casablanca · Rabat · Meknès · © 2026</p>
+      </div>
+
+      <!-- The name, split by the light of the door. The logo above carries it for screen readers. -->
+      <div class="footer__name" aria-hidden="true">
+        <span class="footer__front">FRONT</span>
+        <span class="footer__slit"></span>
+        <span class="footer__door">DOOR</span>
+      </div>
+    </footer>
+  </body>
+</html>

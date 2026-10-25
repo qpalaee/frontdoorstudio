@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reveal 1 · Before scroll</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500&amp;family=Jost:wght@300;400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#F6DBAE}a:hover{color:#FFF4DC}
+.h-bg{background-color:#050403;background-image:url(../assets/hero-light-column.png);background-repeat:no-repeat;background-size:cover;background-position:center bottom}
+.g-btn{display:inline-flex;align-items:center;gap:10px;min-height:54px;padding:0 30px;border-radius:14px;background:linear-gradient(180deg,rgba(255,248,234,0.10),rgba(255,248,234,0.03));border:1px solid rgba(246,219,174,0.32);color:#FFF4DC;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.18),0 10px 30px -10px rgba(0,0,0,0.8),0 0 60px rgba(232,184,119,0.25);text-decoration:none;font-size:16px;font-weight:400}
+.title{background:linear-gradient(180deg,#FFFFFF 0%,#F4EEE4 55%,#E8C48A 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+@media (max-width:860px){.hide-m{display:none !important}.title{font-size:40px !important}}
+</style>
+</helmet>
+
+<section class="h-bg" style="position: relative; overflow: hidden; min-height: 900px; color: #EFE8DE; font-family: 'Jost', Arial, sans-serif; font-weight: 300; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; padding: 0 24px;">
+
+  <header style="width: 100%; max-width: 1240px; display: flex; justify-content: space-between; align-items: center; padding-block: 26px;">
+    <a href="#top" aria-label="Frontdoor Studio home" style="display: block; line-height: 0;"><img src="../assets/logo-horizontal-dark.svg" alt="Frontdoor Studio" style="height: 40px; width: auto;"></a>
+    <nav class="hide-m" aria-label="Main" style="display: flex; gap: 36px; font-size: 15px;">
+      <a href="#work" style="color: #CFC6BA; text-decoration: none;">Work</a>
+      <a href="#services" style="color: #CFC6BA; text-decoration: none;">Services</a>
+      <a href="#studio" style="color: #CFC6BA; text-decoration: none;">Studio</a>
+    </nav>
+    <a href="#contact" style="color: #F6DBAE; font-size: 15px; text-decoration: none;">Contact</a>
+  </header>
+
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 22px; margin-top: 64px; text-align: center;">
+    <h1 class="title" style="margin: 0; font-family: 'Unbounded', Arial, sans-serif; font-weight: 500; font-size: 72px; line-height: 1.04; letter-spacing: -0.03em;">Your door<br>to the internet.</h1>
+    <p style="margin: 0; font-size: 19px; color: #CFC6BA;">Websites and social media for businesses in Morocco.</p>
+    <a href="#contact" class="g-btn" style="margin-top: 10px;">Start your site</a>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

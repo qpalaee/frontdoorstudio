@@ -1,0 +1,269 @@
+/* ==========================================================================
+   Services: a giant glowing word, with three glass cards over its lower half
+   so the glass picks up its light.
+   ========================================================================== */
+
+.services {
+  position: relative;
+  min-height: 1000px;
+  padding: 96px var(--gutter);
+  z-index: 1; /* above the traveling light */
+  overflow: hidden; /* the word's glow must not cause sideways scroll */
+  /* No background color: the light-scene's color shows through, so the
+     traveling light (behind this section) stays visible. */
+  background-image:
+    /* Starts with the hero's exact black, so the two sections join without a line. */
+    linear-gradient(180deg, var(--bg) 0, rgb(5 4 3 / 0) 240px),
+    radial-gradient(ellipse 70% 38% at 50% 26%, rgb(240 168 80 / 0.16), transparent 70%);
+  text-align: center;
+}
+
+.services__eyebrow {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.services__word {
+  margin: 18px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(64px, 13.6vw, 200px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  background: linear-gradient(
+    180deg,
+    #fff6e6 0%,
+    #f9d9a6 38%,
+    #f2c07a 62%,
+    rgb(178 112 44 / 0.55) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Never animated: GSAP only moves transform and opacity here. */
+  filter: drop-shadow(0 0 40px rgb(240 168 80 / 0.45)) drop-shadow(0 0 120px rgb(240 168 80 / 0.25));
+}
+
+/* --- Cards --------------------------------------------------------------- */
+
+.services__cards {
+  position: relative; /* above the word, so the blur shows its light through the glass */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+  max-width: 1160px;
+  margin: -44px auto 0; /* overlaps the word a little; the word stays readable */
+  text-align: left;
+}
+
+.services__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 34px 30px 30px;
+  border: 1px solid rgb(242 192 122 / 0.24);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgb(255 236 205 / 0.09), rgb(255 236 205 / 0.025));
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 30px 60px -20px rgb(0 0 0 / 0.85);
+}
+
+/* Lifted with `top`, not transform: GSAP animates the transform on reveal. */
+.services__card.is-featured {
+  top: -18px;
+  border-color: rgb(242 192 122 / 0.6);
+  background: linear-gradient(180deg, rgb(255 231 194 / 0.16), rgb(255 231 194 / 0.05));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 30px 60px -20px rgb(0 0 0 / 0.85),
+    0 0 90px rgb(240 168 80 / 0.28);
+}
+
+.services__badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  translate: -50% 0;
+  padding: 5px 14px;
+  border: 1px solid rgb(242 192 122 / 0.6);
+  border-radius: 999px;
+  background: #0e0a06;
+  color: var(--gold-light);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.services__card-title {
+  margin: 0;
+  color: var(--gold-white);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.services__card-desc {
+  margin-top: -12px; /* sits close to its title, as one block */
+  color: #b8aea2;
+  font-size: 15px;
+}
+
+.services__price {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.services__price-label,
+.services__price-note {
+  color: var(--ink-3);
+}
+
+.services__price-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.services__price-amount {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.services__price-currency {
+  color: var(--ink-2);
+  font-size: 16px;
+}
+
+.services__price-note {
+  font-size: 14px;
+}
+
+.services__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.services__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/* Small glowing gold dot instead of the default bullet. */
+.services__item::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  box-shadow: 0 0 8px rgb(242 192 122 / 0.8);
+}
+
+.services__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 4px;
+  border: 1px solid rgb(242 192 122 / 0.38);
+  border-radius: 13px;
+  background: linear-gradient(180deg, rgb(255 236 205 / 0.1), rgb(255 236 205 / 0.03));
+  color: var(--gold-white);
+  font-size: 15px;
+  font-weight: 400;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.services__button:hover {
+  border-color: rgb(242 192 122 / 0.7);
+}
+
+.services__button--solid {
+  border: 0;
+  background: linear-gradient(180deg, var(--gold-white), var(--gold-light));
+  color: #1a1006;
+  font-weight: 500;
+}
+
+.services__button--solid:hover {
+  color: #1a1006;
+}
+
+/* --- Footer -------------------------------------------------------------- */
+
+.services__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  margin-top: 56px;
+}
+
+.services__maintenance {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* 44px tall to tap, with the text and its thin underline at the bottom. */
+.services__more {
+  display: inline-flex;
+  align-items: flex-end;
+  min-height: 44px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid rgb(156 146 134 / 0.35);
+  color: var(--ink-3);
+  font-size: 15px;
+}
+
+.services__more:hover {
+  color: var(--ink-2);
+}
+
+/* --- Phones -------------------------------------------------------------- */
+
+@media (max-width: 860px) {
+  .services {
+    min-height: 0;
+  }
+
+  .services__cards {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin-top: -24px;
+  }
+
+  .services__card {
+    -webkit-backdrop-filter: blur(10px); /* lighter blur: cheaper on phones */
+    backdrop-filter: blur(10px);
+  }
+
+  /* Stacked: no lift, but keep room for the badge above it. */
+  .services__card.is-featured {
+    top: 0;
+    margin-top: 12px;
+  }
+}

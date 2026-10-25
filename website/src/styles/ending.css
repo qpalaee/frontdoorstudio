@@ -1,0 +1,482 @@
+/* ==========================================================================
+   The last three blocks: Studio, Contact, Footer.
+   ========================================================================== */
+
+/* Shared look for the eyebrows and titles of these sections. */
+.studio__eyebrow,
+.contact__eyebrow {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.studio__title,
+.contact__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  background: linear-gradient(180deg, #fff 0%, #fff6e8 60%, #f2c995 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ==========================================================================
+   Studio
+   ========================================================================== */
+
+.studio {
+  padding: 128px var(--gutter) 144px;
+  background:
+    radial-gradient(ellipse 45% 60% at 78% 45%, rgb(240 168 80 / 0.1), transparent 70%),
+    #070504;
+}
+
+.studio__inner {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.studio__text {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.studio__title {
+  font-size: clamp(38px, 4.6vw, 66px);
+}
+
+.studio__lead {
+  max-width: 36ch;
+  color: #b8aea2;
+  font-size: 19px;
+  line-height: 1.6;
+}
+
+.studio__link {
+  /* 44px tall to tap, text and underline at the bottom. */
+  display: inline-flex;
+  align-items: flex-end;
+  align-self: flex-start;
+  min-height: 44px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgb(242 192 122 / 0.4);
+  font-size: 16px;
+}
+
+.studio__team {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.studio__member {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Staggered: the second portrait sits lower. */
+.studio__member:nth-child(2) {
+  margin-top: 72px;
+}
+
+.studio__photo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  max-width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid rgb(242 192 122 / 0.18);
+  border-radius: 18px;
+  background: linear-gradient(160deg, #1a1510, #0d0a07 70%);
+}
+
+/* For the real photo later: fills the frame, under the light. */
+.studio__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.studio__placeholder {
+  color: #8f857a;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Door light falling on the face; stays on top of the photo. */
+.studio__light {
+  position: absolute;
+  inset-block: 0;
+  width: 38%;
+  pointer-events: none;
+}
+
+.studio__photo--alae .studio__light {
+  right: 0;
+  background: linear-gradient(270deg, rgb(255 226 180 / 0.22), transparent);
+}
+
+.studio__photo--laila .studio__light {
+  left: 0;
+  background: linear-gradient(90deg, rgb(255 226 180 / 0.22), transparent);
+}
+
+.studio__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.studio__name {
+  color: var(--gold-white);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.studio__role {
+  color: var(--gold-light);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.studio__line {
+  color: #b8aea2;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   Contact
+   ========================================================================== */
+
+.contact {
+  /* The light slit in the photo: from 36.5% to 66.1% of the image height.
+     The image always fills the section height (background-size: auto 100%),
+     so those percentages are also positions in the section. The text sits
+     above the slit and the actions below it, whatever the screen size. */
+  --slit-top: 36.5%;
+  --slit-bottom: 66.1%;
+
+  position: relative;
+  height: 900px;
+  overflow: hidden;
+  background-color: #070504;
+  background-image: url('/assets/images/contact-door-1280.jpg');
+  background-image: image-set(
+    url('/assets/images/contact-door-1280.avif') type('image/avif'),
+    url('/assets/images/contact-door-1280.webp') type('image/webp'),
+    url('/assets/images/contact-door-1280.jpg') type('image/jpeg')
+  );
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: auto 100%; /* like cover, but never zooms in on wide screens */
+  text-align: center;
+}
+
+/* Screens wider than the photo: its sides fade into the page black. */
+@media (min-width: 1620px) {
+  .contact {
+    background-image:
+      linear-gradient(90deg, #070504 calc(50% - 800px), rgb(7 5 4 / 0) calc(50% - 620px), rgb(7 5 4 / 0) calc(50% + 620px), #070504 calc(50% + 800px)),
+      image-set(
+        url('/assets/images/contact-door-1280.avif') type('image/avif'),
+        url('/assets/images/contact-door-1280.webp') type('image/webp'),
+        url('/assets/images/contact-door-1280.jpg') type('image/jpeg')
+      );
+  }
+}
+
+/* Top fade: blends into the Studio section above. */
+.contact::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  height: 220px;
+  background: linear-gradient(180deg, #070504, rgb(7 5 4 / 0));
+  pointer-events: none;
+}
+
+/* "The night": covers the photo, faded out by the scroll animation. */
+.contact__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #070504;
+  opacity: 0; /* visible state set by main.js; stays hidden with reduced motion */
+  pointer-events: none;
+}
+
+.contact__text,
+.contact__actions {
+  z-index: 1;
+}
+
+.contact__text {
+  /* Its bottom edge stays 28px above the top of the slit. */
+  position: absolute;
+  right: 0;
+  bottom: calc(100% - var(--slit-top) + 28px);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: var(--gutter);
+}
+
+.contact__eyebrow {
+  margin-bottom: 22px;
+}
+
+.contact__title {
+  max-width: 16ch;
+  font-size: clamp(38px, 5.2vw, 76px);
+  text-wrap: balance;
+}
+
+.contact__lead {
+  max-width: 40ch;
+  margin-top: 22px;
+  color: #b8aea2;
+  font-size: 19px;
+}
+
+/* On the lit sand, starting 28px under the bottom of the slit. */
+.contact__actions {
+  position: absolute;
+  top: calc(var(--slit-bottom) + 28px);
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding-inline: var(--gutter);
+}
+
+.contact__whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding: 0 34px;
+  border-radius: 15px;
+  background: linear-gradient(180deg, var(--gold-white), var(--gold-light));
+  color: #1a1006;
+  font-size: 17px;
+  font-weight: 500;
+  box-shadow:
+    0 0 60px rgb(240 168 80 / 0.45),
+    0 14px 30px -10px rgb(0 0 0 / 0.8);
+}
+
+.contact__whatsapp:hover {
+  color: #1a1006;
+}
+
+.contact__details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 32px;
+  margin: 0;
+  padding: 12px 20px;
+  border-radius: 14px;
+  /* The sand behind is bright: a soft dark backdrop keeps the small labels readable. */
+  background: rgb(7 5 4 / 0.75); /* grey labels reach ~4.8:1 on the brightest sand */
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.contact__detail {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.contact__label {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.contact__value {
+  margin: 0;
+  user-select: text;
+}
+
+.contact__value a {
+  color: inherit;
+}
+
+.contact__value a:hover {
+  color: var(--gold-white);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 72px;
+  padding: 96px var(--gutter) 0;
+  overflow: hidden; /* cuts the bottom of the giant letters */
+  border-top: 1px solid rgb(242 192 122 / 0.12);
+  background: #070504;
+}
+
+.footer__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  max-width: 1240px;
+}
+
+.footer__logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.footer__logo img {
+  width: auto;
+  height: 34px;
+}
+
+.footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 28px;
+}
+
+.footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.footer__nav a:hover {
+  color: var(--ink-2);
+}
+
+.footer__meta {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* FRONT | light | DOOR */
+.footer__name {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(6px, 0.9vw, 12px) minmax(0, 1fr);
+  gap: clamp(10px, 1.6vw, 26px);
+  align-items: end;
+  width: 100%;
+  max-width: 1340px;
+  margin-bottom: -0.12em;
+  font-family: var(--font-display);
+  /* FRONT is about 4.1em wide: the size follows the available width so it
+     always fits its half (the row is at most 1340px, minus the side padding). */
+  font-size: clamp(30px, calc((min(100vw, 1388px) - 48px) / 9), 176px);
+  font-weight: 600;
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+}
+
+.footer__front,
+.footer__door {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.footer__front {
+  text-align: right;
+  background-image: linear-gradient(90deg, #3a3029 0%, #9c8a70 60%, #fff1d9 100%);
+}
+
+.footer__door {
+  text-align: left;
+  background-image: linear-gradient(90deg, #fff1d9 0%, #9c8a70 40%, #3a3029 100%);
+}
+
+.footer__slit {
+  align-self: stretch;
+  background: linear-gradient(180deg, #fff8ec 0%, #ffe7c2 70%, rgb(242 192 122 / 0) 100%);
+  box-shadow:
+    0 0 18px 2px rgb(255 214 150 / 0.65),
+    0 0 60px 10px rgb(240 168 80 / 0.3);
+}
+
+/* ==========================================================================
+   Phones
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .studio__inner {
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+
+  .studio__team {
+    gap: 20px;
+  }
+
+  .studio__member:nth-child(2) {
+    margin-top: 0;
+  }
+
+  .contact {
+    height: 780px;
+    background-image: url('/assets/images/contact-door-1280.jpg');
+    background-image: image-set(
+      url('/assets/images/contact-door-1280.avif') type('image/avif'),
+      url('/assets/images/contact-door-1280.webp') type('image/webp'),
+      url('/assets/images/contact-door-1280.jpg') type('image/jpeg')
+    );
+  }
+
+  .contact__details {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer__top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
