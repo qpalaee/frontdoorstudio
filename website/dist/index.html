@@ -7,6 +7,10 @@
     <meta name="description" content="Websites and social media for businesses in Morocco." />
     <meta name="theme-color" content="#050403" />
 
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
     <!-- Tells the CSS that JavaScript is running, before the first paint.
          Without it the laptop would flash on screen before main.js hides it.
          Also hides the intro right away if it already played this session,
@@ -26,18 +30,29 @@
     />
 
     <!-- The hero background is the first thing people see: start downloading it
-         right away. Same files and sizes as the <picture> below, so it is not fetched twice. -->
+         right away. Same files, sizes and media as the <picture> below, so it is not
+         fetched twice. Tall phones get the tall version, everything else the wide one. -->
     <link
       rel="preload"
       as="image"
       type="image/avif"
-      imagesrcset="/assets/images/hero-desert-door-828.avif 828w, /assets/images/hero-desert-door-1280.avif 1280w, /assets/images/hero-desert-door-1672.avif 1672w"
+      media="(max-aspect-ratio: 1880/3344)"
+      imagesrcset="/assets/images/hero-desert-door-tall-600.avif 600w, /assets/images/hero-desert-door-tall-900.avif 900w, /assets/images/hero-desert-door-tall-1300.avif 1300w, /assets/images/hero-desert-door-tall-1880.avif 1880w"
+      imagesizes="57vh"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      media="(min-aspect-ratio: 1881/3344)"
+      imagesrcset="/assets/images/hero-desert-door-828.avif 828w, /assets/images/hero-desert-door-1280.avif 1280w, /assets/images/hero-desert-door-1920.avif 1920w, /assets/images/hero-desert-door-2560.avif 2560w"
       imagesizes="178vh"
       fetchpriority="high"
     />
 
-    <script type="module" crossorigin src="/assets/index-D39a4gdZ.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CEb0NYYf.css">
+    <script type="module" crossorigin src="/assets/index-DRGcXyXZ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-5Rw5l5s0.css">
   </head>
 
   <body>
@@ -51,23 +66,20 @@
          so it stays on screen while the light opens. -->
     <div class="scene" id="top" data-scene>
       <picture class="scene__bg" aria-hidden="true" data-scene-bg>
-        <source
-          type="image/avif"
-          srcset="/assets/images/hero-desert-door-828.avif 828w, /assets/images/hero-desert-door-1280.avif 1280w, /assets/images/hero-desert-door-1672.avif 1672w"
-          sizes="178vh"
-        />
-        <source
-          type="image/webp"
-          srcset="/assets/images/hero-desert-door-828.webp 828w, /assets/images/hero-desert-door-1280.webp 1280w, /assets/images/hero-desert-door-1672.webp 1672w"
-          sizes="178vh"
-        />
+        <!-- Phones in portrait: a tall version of the photo, with more sky for the title.
+             The media query must match TALL_SCREEN in src/intro.js and hero.css. -->
+        <source type="image/avif" media="(max-aspect-ratio: 1880/3344)" srcset="/assets/images/hero-desert-door-tall-600.avif 600w, /assets/images/hero-desert-door-tall-900.avif 900w, /assets/images/hero-desert-door-tall-1300.avif 1300w, /assets/images/hero-desert-door-tall-1880.avif 1880w" sizes="57vh" />
+        <source type="image/webp" media="(max-aspect-ratio: 1880/3344)" srcset="/assets/images/hero-desert-door-tall-600.webp 600w, /assets/images/hero-desert-door-tall-900.webp 900w, /assets/images/hero-desert-door-tall-1300.webp 1300w, /assets/images/hero-desert-door-tall-1880.webp 1880w" sizes="57vh" />
+        <source type="image/jpeg" media="(max-aspect-ratio: 1880/3344)" srcset="/assets/images/hero-desert-door-tall-600.jpg 600w, /assets/images/hero-desert-door-tall-900.jpg 900w, /assets/images/hero-desert-door-tall-1300.jpg 1300w, /assets/images/hero-desert-door-tall-1880.jpg 1880w" sizes="57vh" />
+        <source type="image/avif" srcset="/assets/images/hero-desert-door-828.avif 828w, /assets/images/hero-desert-door-1280.avif 1280w, /assets/images/hero-desert-door-1920.avif 1920w, /assets/images/hero-desert-door-2560.avif 2560w" sizes="178vh" />
+        <source type="image/webp" srcset="/assets/images/hero-desert-door-828.webp 828w, /assets/images/hero-desert-door-1280.webp 1280w, /assets/images/hero-desert-door-1920.webp 1920w, /assets/images/hero-desert-door-2560.webp 2560w" sizes="178vh" />
         <img
           class="scene__bg-img"
-          src="/assets/images/hero-desert-door-1672.jpg"
-          srcset="/assets/images/hero-desert-door-828.jpg 828w, /assets/images/hero-desert-door-1280.jpg 1280w, /assets/images/hero-desert-door-1672.jpg 1672w"
+          src="/assets/images/hero-desert-door-1920.jpg"
+          srcset="/assets/images/hero-desert-door-828.jpg 828w, /assets/images/hero-desert-door-1280.jpg 1280w, /assets/images/hero-desert-door-1920.jpg 1920w, /assets/images/hero-desert-door-2560.jpg 2560w"
           sizes="178vh"
-          width="1672"
-          height="941"
+          width="2560"
+          height="1441"
           alt=""
           fetchpriority="high"
         />
@@ -291,7 +303,7 @@
                 <span class="studio__light" aria-hidden="true"></span>
               </div>
               <figcaption class="studio__caption">
-                <span class="studio__name">Laila</span>
+                <span class="studio__name">Laila fathallah</span>
                 <span class="studio__role">Social media</span>
                 <span class="studio__line">Plans, designs and publishes your content every month.</span>
               </figcaption>
@@ -351,7 +363,7 @@
           <a href="#contact">Contact</a>
           <a href="https://instagram.com/frontdoor.la" target="_blank" rel="noopener">Instagram</a>
         </nav>
-        <p class="footer__meta">Casablanca · Rabat · Meknès · © 2026</p>
+        <p class="footer__meta">Morocco · © 2026</p>
       </div>
 
       <!-- The name, split by the light of the door. The logo above carries it for screen readers. -->

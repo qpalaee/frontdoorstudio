@@ -170,22 +170,22 @@
    ========================================================================== */
 
 .contact {
-  /* The light slit in the photo: from 36.5% to 66.1% of the image height.
+  /* The light slit in the photo: from 36.4% to 65.9% of the image height.
      The image always fills the section height (background-size: auto 100%),
      so those percentages are also positions in the section. The text sits
      above the slit and the actions below it, whatever the screen size. */
-  --slit-top: 36.5%;
-  --slit-bottom: 66.1%;
+  --slit-top: 36.4%;
+  --slit-bottom: 65.9%;
 
   position: relative;
   height: 900px;
   overflow: hidden;
   background-color: #070504;
-  background-image: url('/assets/images/contact-door-1280.jpg');
+  background-image: url('/assets/images/contact-door-1920.jpg');
   background-image: image-set(
-    url('/assets/images/contact-door-1280.avif') type('image/avif'),
-    url('/assets/images/contact-door-1280.webp') type('image/webp'),
-    url('/assets/images/contact-door-1280.jpg') type('image/jpeg')
+    url('/assets/images/contact-door-1920.avif') type('image/avif'),
+    url('/assets/images/contact-door-1920.webp') type('image/webp'),
+    url('/assets/images/contact-door-1920.jpg') type('image/jpeg')
   );
   background-position: center bottom;
   background-repeat: no-repeat;
@@ -199,9 +199,9 @@
     background-image:
       linear-gradient(90deg, #070504 calc(50% - 800px), rgb(7 5 4 / 0) calc(50% - 620px), rgb(7 5 4 / 0) calc(50% + 620px), #070504 calc(50% + 800px)),
       image-set(
-        url('/assets/images/contact-door-1280.avif') type('image/avif'),
-        url('/assets/images/contact-door-1280.webp') type('image/webp'),
-        url('/assets/images/contact-door-1280.jpg') type('image/jpeg')
+        url('/assets/images/contact-door-2560.avif') type('image/avif'),
+        url('/assets/images/contact-door-2560.webp') type('image/webp'),
+        url('/assets/images/contact-door-2560.jpg') type('image/jpeg')
       );
   }
 }

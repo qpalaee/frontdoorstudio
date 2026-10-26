@@ -10,14 +10,19 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const STORAGE_KEY = 'fd-intro-played'; // same key as the inline script in index.html
 const MAX_WAIT_MS = 4000; // never leave people on a black screen if the photo is slow
 
-// The light column in the hero photo, as fractions of the photo's size,
-// so they stay true at any resolution (828, 1280 or 1672px wide).
-const COLUMN = { x: 0.5, top: 322 / 941, bottom: 692 / 941, width: 30 / 1672 };
+// The light column in each hero photo, as fractions of the photo's size,
+// so they stay true at any resolution. Measured on the source images.
+const COLUMNS = {
+  wide: { x: 0.5, top: 0.349, bottom: 0.74, width: 0.0185 },
+  tall: { x: 0.4992, top: 0.4106, bottom: 0.667, width: 0.0324 },
+};
+// Same media query as the tall <source> in index.html and in hero.css.
+const TALL_SCREEN = '(max-aspect-ratio: 1880/3344)';
 
 /* Where the photo's light column is on screen right now.
    The photo is drawn like background-size: cover + position: center bottom,
    inside `el` (the box that holds the background image). */
-function column(el, imgW, imgH) {
+function column(el, imgW, imgH, COLUMN) {
   const r = el.getBoundingClientRect();
   const s = Math.max(r.width / imgW, r.height / imgH);
   const w = imgW * s;
@@ -123,7 +128,13 @@ export async function initIntro({ getLenis }) {
     return;
   }
 
-  const c = column(bg, bgImg.naturalWidth || 1672, bgImg.naturalHeight || 941);
+  const tall = window.matchMedia(TALL_SCREEN).matches;
+  const c = column(
+    bg,
+    bgImg.naturalWidth || (tall ? 1880 : 2560),
+    bgImg.naturalHeight || (tall ? 3344 : 1441),
+    tall ? COLUMNS.tall : COLUMNS.wide,
+  );
   const bgRect = bg.getBoundingClientRect();
 
   gsap.set(beam, { x: c.x - c.w / 2, y: c.top, width: c.w, height: c.h, scaleX: 2 / c.w, scaleY: 0, opacity: 1 });

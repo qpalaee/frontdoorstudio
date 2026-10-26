@@ -16,8 +16,8 @@
 
   /* Where the flat top of the light column lands on screen.
      The image is always exactly as tall as the screen (see .scene__bg),
-     and the top of the column sits at 328/941 = 34.86% of its height. */
-  --column-top: 34.86svh;
+     and the top of the column sits at 34.9% of its height. */
+  --column-top: 34.9svh;
   /* The heading must end 24px above the light, under the header. */
   --sky-bottom: calc(var(--column-top) - 24px);
 
@@ -28,6 +28,14 @@
 }
 
 /* --- Background image ---------------------------------------------------- */
+
+/* Tall phones get the tall photo (see the <picture> in index.html),
+   where the light starts lower: at 41.1% of the height. */
+@media (max-aspect-ratio: 1880/3344) {
+  .scene {
+    --column-top: 41.1svh;
+  }
+}
 
 .scene__bg {
   position: absolute;

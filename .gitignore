@@ -1,0 +1,8 @@
+# Installed packages: recreated with `npm install`
+node_modules/
+
+# macOS folder settings
+.DS_Store
+
+# Logs
+npm-debug.log*
