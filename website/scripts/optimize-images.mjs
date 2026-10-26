@@ -7,9 +7,7 @@ const SRC = 'frontdoor-hero-kit/assets';
 const OUT = 'public/assets/images';
 
 const jobs = [
-  // Hero background: a wide version for desktop/tablet and a tall one for phones.
-  { file: 'hero-desert-door.png', name: 'hero-desert-door', widths: [828, 1280, 1920, 2560] },
-  { file: 'hero-desert-door-tall.png', name: 'hero-desert-door-tall', widths: [600, 900, 1300, 1880] },
+  // (The hero photo has its own script: scripts/build-hero-images.mjs)
   // Contact background: the light slit in the dunes.
   { file: 'contact-door.jpg', name: 'contact-door', widths: [828, 1280, 1920, 2560] },
   // The laptop screen is at most ~1010 CSS px wide, so 2080px covers 2x screens.

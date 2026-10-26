@@ -13,12 +13,19 @@
 
     <!-- Tells the CSS that JavaScript is running, before the first paint.
          Without it the laptop would flash on screen before main.js hides it.
-         Also hides the intro right away if it already played this session,
-         so returning visitors never see a black flash. -->
+         `intro-pending` hides the hero before the first paint when the intro is
+         going to play (first visit this session, motion allowed), so the photo
+         doesn't flash before the intro starts. Same key as src/intro.js. -->
     <script>
       document.documentElement.classList.add('js');
       try {
-        if (sessionStorage.getItem('fd-intro-played')) document.documentElement.classList.add('intro-off');
+        if (!sessionStorage.getItem('fd-intro-seen') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('intro-pending');
+          // Safety net: if the JavaScript never runs, show the page anyway.
+          setTimeout(function () {
+            document.documentElement.classList.remove('intro-pending');
+          }, 6000);
+        }
       } catch (e) {}
     </script>
 
@@ -29,25 +36,24 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Jost:wght@300;400&family=Unbounded:wght@500;600&display=swap"
     />
 
-    <!-- The hero background is the first thing people see: start downloading it
-         right away. Same files, sizes and media as the <picture> below, so it is not
-         fetched twice. Tall phones get the tall version, everything else the wide one. -->
+    <!-- The hero photo is the first thing people see: start downloading it right away.
+         Same files and media as the <picture> below, so it is not fetched twice. -->
     <link
       rel="preload"
       as="image"
       type="image/avif"
-      media="(max-aspect-ratio: 1880/3344)"
-      imagesrcset="/assets/images/hero-desert-door-tall-600.avif 600w, /assets/images/hero-desert-door-tall-900.avif 900w, /assets/images/hero-desert-door-tall-1300.avif 1300w, /assets/images/hero-desert-door-tall-1880.avif 1880w"
-      imagesizes="57vh"
+      media="(orientation: portrait)"
+      imagesrcset="/images/hero/hero-door-mobile-1080.avif 1080w, /images/hero/hero-door-mobile-1536.avif 1536w, /images/hero/hero-door-mobile-2048.avif 2048w"
+      imagesizes="100vw"
       fetchpriority="high"
     />
     <link
       rel="preload"
       as="image"
       type="image/avif"
-      media="(min-aspect-ratio: 1881/3344)"
-      imagesrcset="/assets/images/hero-desert-door-828.avif 828w, /assets/images/hero-desert-door-1280.avif 1280w, /assets/images/hero-desert-door-1920.avif 1920w, /assets/images/hero-desert-door-2560.avif 2560w"
-      imagesizes="178vh"
+      media="(orientation: landscape)"
+      imagesrcset="/images/hero/hero-door-desktop-1600.avif 1600w, /images/hero/hero-door-desktop-2400.avif 2400w, /images/hero/hero-door-desktop-3344.avif 3344w"
+      imagesizes="100vw"
       fetchpriority="high"
     />
 
@@ -56,34 +62,73 @@
   </head>
 
   <body>
-    <!-- Intro: black screen, a line of light grows and opens, then hands off to the hero photo. -->
-    <div class="intro-stage" aria-hidden="true"></div>
-    <div class="intro-bloom" aria-hidden="true"></div>
-    <div class="intro-beam" aria-hidden="true"></div>
-    <button class="intro-skip" type="button">Skip</button>
-
     <!-- The scene is the part that gets pinned on desktop. The header lives inside it
          so it stays on screen while the light opens. -->
     <div class="scene" id="top" data-scene>
-      <picture class="scene__bg" aria-hidden="true" data-scene-bg>
-        <!-- Phones in portrait: a tall version of the photo, with more sky for the title.
-             The media query must match TALL_SCREEN in src/intro.js and hero.css. -->
-        <source type="image/avif" media="(max-aspect-ratio: 1880/3344)" srcset="/assets/images/hero-desert-door-tall-600.avif 600w, /assets/images/hero-desert-door-tall-900.avif 900w, /assets/images/hero-desert-door-tall-1300.avif 1300w, /assets/images/hero-desert-door-tall-1880.avif 1880w" sizes="57vh" />
-        <source type="image/webp" media="(max-aspect-ratio: 1880/3344)" srcset="/assets/images/hero-desert-door-tall-600.webp 600w, /assets/images/hero-desert-door-tall-900.webp 900w, /assets/images/hero-desert-door-tall-1300.webp 1300w, /assets/images/hero-desert-door-tall-1880.webp 1880w" sizes="57vh" />
-        <source type="image/jpeg" media="(max-aspect-ratio: 1880/3344)" srcset="/assets/images/hero-desert-door-tall-600.jpg 600w, /assets/images/hero-desert-door-tall-900.jpg 900w, /assets/images/hero-desert-door-tall-1300.jpg 1300w, /assets/images/hero-desert-door-tall-1880.jpg 1880w" sizes="57vh" />
-        <source type="image/avif" srcset="/assets/images/hero-desert-door-828.avif 828w, /assets/images/hero-desert-door-1280.avif 1280w, /assets/images/hero-desert-door-1920.avif 1920w, /assets/images/hero-desert-door-2560.avif 2560w" sizes="178vh" />
-        <source type="image/webp" srcset="/assets/images/hero-desert-door-828.webp 828w, /assets/images/hero-desert-door-1280.webp 1280w, /assets/images/hero-desert-door-1920.webp 1920w, /assets/images/hero-desert-door-2560.webp 2560w" sizes="178vh" />
-        <img
-          class="scene__bg-img"
-          src="/assets/images/hero-desert-door-1920.jpg"
-          srcset="/assets/images/hero-desert-door-828.jpg 828w, /assets/images/hero-desert-door-1280.jpg 1280w, /assets/images/hero-desert-door-1920.jpg 1920w, /assets/images/hero-desert-door-2560.jpg 2560w"
-          sizes="178vh"
-          width="2560"
-          height="1441"
-          alt=""
-          fetchpriority="high"
-        />
-      </picture>
+      <!-- Hero media: the door photo + the drawn slit of light on top of it, in the
+           photo's own pixel coordinates (so it lands exactly on the photo's slit).
+           This wrapper is what the intro scales and the scroll reveal fades. -->
+      <div class="scene__media" aria-hidden="true" data-scene-media>
+        <picture class="scene__bg" data-hero-picture>
+          <source type="image/avif" media="(orientation: portrait)" srcset="/images/hero/hero-door-mobile-1080.avif 1080w, /images/hero/hero-door-mobile-1536.avif 1536w, /images/hero/hero-door-mobile-2048.avif 2048w" sizes="100vw" width="2048" height="3072" />
+          <source type="image/webp" media="(orientation: portrait)" srcset="/images/hero/hero-door-mobile-1080.webp 1080w, /images/hero/hero-door-mobile-1536.webp 1536w, /images/hero/hero-door-mobile-2048.webp 2048w" sizes="100vw" width="2048" height="3072" />
+          <source type="image/avif" srcset="/images/hero/hero-door-desktop-1600.avif 1600w, /images/hero/hero-door-desktop-2400.avif 2400w, /images/hero/hero-door-desktop-3344.avif 3344w" sizes="100vw" />
+          <source type="image/webp" srcset="/images/hero/hero-door-desktop-1600.webp 1600w, /images/hero/hero-door-desktop-2400.webp 2400w, /images/hero/hero-door-desktop-3344.webp 3344w" sizes="100vw" />
+          <img
+            class="scene__bg-img"
+            src="/images/hero/hero-door-desktop-1600.webp"
+            srcset="/images/hero/hero-door-desktop-1600.webp 1600w, /images/hero/hero-door-desktop-2400.webp 2400w, /images/hero/hero-door-desktop-3344.webp 3344w"
+            sizes="100vw"
+            width="3344"
+            height="1882"
+            alt=""
+            fetchpriority="high"
+          />
+        </picture>
+        <svg class="door-ink door-ink--desktop" viewBox="0 0 3344 1882" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="door-ink-grad-desktop" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFE7C2" />
+              <stop offset="0.12" stop-color="#FFF6E4" />
+              <stop offset="0.88" stop-color="#FFF6E4" />
+              <stop offset="1" stop-color="#F2C07A" />
+            </linearGradient>
+            <filter id="door-ink-glow-desktop" x="-400%" y="-20%" width="900%" height="140%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="22" result="wide" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="tight" />
+              <feMerge>
+                <feMergeNode in="wide" />
+                <feMergeNode in="tight" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <rect class="door-ink__slit" x="1601" y="688" width="24" height="470" fill="url(#door-ink-grad-desktop)" filter="url(#door-ink-glow-desktop)" />
+        </svg>
+        <svg class="door-ink door-ink--mobile" viewBox="0 0 2048 3072" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="door-ink-grad-mobile" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFE7C2" />
+              <stop offset="0.12" stop-color="#FFF6E4" />
+              <stop offset="0.88" stop-color="#FFF6E4" />
+              <stop offset="1" stop-color="#F2C07A" />
+            </linearGradient>
+            <filter id="door-ink-glow-mobile" x="-400%" y="-20%" width="900%" height="140%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="wide" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="tight" />
+              <feMerge>
+                <feMergeNode in="wide" />
+                <feMergeNode in="tight" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <rect class="door-ink__slit" x="956" y="1119" width="34" height="722" fill="url(#door-ink-grad-mobile)" filter="url(#door-ink-glow-mobile)" />
+        </svg>
+      </div>
+
+      <!-- Dust floating in the light of the door (drawn by src/dust.js). -->
+      <canvas class="scene__dust" aria-hidden="true" data-hero-dust></canvas>
 
       <header class="site-header" role="banner">
         <div class="site-header__inner">
@@ -111,6 +156,8 @@
             <p class="hero__lead">Websites and social media for businesses in Morocco.</p>
           </div>
           <a class="glass-button hero__cta" href="#contact">Start your site</a>
+          <!-- Only shown while the intro plays. -->
+          <button class="intro-skip" type="button" data-intro-skip>Skip</button>
         </div>
 
         <div class="hero__work" id="work" data-hero-work>

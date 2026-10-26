@@ -17,7 +17,8 @@ const MOTION_OK = '(prefers-reduced-motion: no-preference)';
 
 const scene = document.querySelector('[data-scene]');
 const hero = {
-  bg: scene.querySelector('[data-scene-bg]'),
+  // The photo + drawn slit, and the dust floating in its light.
+  bg: [scene.querySelector('[data-scene-media]'), scene.querySelector('[data-hero-dust]')],
   intro: scene.querySelector('[data-hero-intro]'),
   work: scene.querySelector('[data-hero-work]'),
   glow: scene.querySelector('[data-hero-glow]'),
@@ -73,16 +74,13 @@ function buildPinnedReveal() {
   // 0–30%: the text moves up and fades out. The header stays.
   tl.to(hero.intro, { y: -60, autoAlpha: 0, duration: 0.3 }, 0);
 
-  // Same time: the desert fades to black, so only the light and the laptop remain.
+  // Same time: the photo fades to black, so only the laptop remains.
   tl.to(hero.bg, { autoAlpha: 0, duration: 0.3 }, 0);
 
-  // 15–60%: the door opens. The thin column widens into the broad glow.
-  tl.fromTo(
-    hero.glow,
-    { scaleX: 0.12, autoAlpha: 0 },
-    { scaleX: 1, autoAlpha: 1, duration: 0.45, ease: 'power2.inOut' },
-    0.15,
-  );
+  // 15–60%: "the door opens" (the thin column widening into a broad glow).
+  // DISABLED until the reveal is redone: it grew from the old centered light
+  // column, which the new door photo doesn't have (its slit is left of center).
+  // tl.fromTo(hero.glow, { scaleX: 0.12, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.45, ease: 'power2.inOut' }, 0.15);
 
   // 25–90%: the laptop rises out of the light, tilted back, then settles straight.
   tl.fromTo(
@@ -110,8 +108,8 @@ function buildMobileReveal() {
     },
   });
 
-  tl.fromTo(hero.glow, { scaleX: 0.12, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.6 }, 0)
-    .fromTo(hero.laptop, { y: 80, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 0.1)
+  // Glow widening disabled for now (see buildPinnedReveal).
+  tl.fromTo(hero.laptop, { y: 80, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 0.1)
     .fromTo(hero.caption, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0.8);
 }
 

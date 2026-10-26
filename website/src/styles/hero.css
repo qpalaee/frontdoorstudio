@@ -14,10 +14,12 @@
   /* The laptop is never wider than 1040px, nor than the screen minus its base. */
   --laptop-w: min(1040px, 100% - 2 * var(--laptop-overhang));
 
-  /* Where the flat top of the light column lands on screen.
-     The image is always exactly as tall as the screen (see .scene__bg),
-     and the top of the column sits at 34.9% of its height. */
-  --column-top: 34.9svh;
+  /* Where the top of the door's slit of light lands on screen.
+     The photo is drawn like cover, centered (object-position 50% 50%), at the
+     scale max(100vw / 3344, 100svh / 1882). The slit starts at y = 688, which is
+     253px above the photo's center (941): so on screen it sits 253 x scale
+     above the middle of the first screen. */
+  --column-top: calc(50svh - max(7.566vw, 13.443svh));
   /* The heading must end 24px above the light, under the header. */
   --sky-bottom: calc(var(--column-top) - 24px);
 
@@ -27,42 +29,79 @@
   background: var(--bg);
 }
 
-/* --- Background image ---------------------------------------------------- */
+/* --- Background: photo + drawn slit + dust ------------------------------ */
 
-/* Tall phones get the tall photo (see the <picture> in index.html),
-   where the light starts lower: at 41.1% of the height. */
-@media (max-aspect-ratio: 1880/3344) {
+/* Phones and tablets held upright get the portrait photo (see index.html).
+   Its slit starts at y = 1119 of 3072: 417px above the center (1536). */
+@media (orientation: portrait) {
   .scene {
-    --column-top: 41.1svh;
+    --column-top: calc(50svh - max(20.361vw, 13.574svh));
   }
 }
 
-.scene__bg {
+/* The intro scales this wrapper and the scroll reveal fades it. */
+.scene__media {
   position: absolute;
   inset: 0 0 auto;
   z-index: -1;
   height: 100svh;
+  transform-origin: 50% 55%;
+}
+
+.scene__bg,
+.scene__bg-img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .scene__bg-img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
-  object-position: center bottom; /* keep the light and the sand, crop the sides */
+  object-position: 50% 50%; /* the slit overlay assumes a centered photo */
 }
 
-/* Screens wider than the image (1672/941): cover would scale it by the width
-   and push the light up into the title. Instead the image keeps the screen's
-   height, stays centered, and its sides fade into the page black. */
-@media (min-aspect-ratio: 1672/941) {
-  .scene__bg {
-    left: 50%;
-    right: auto;
-    width: calc(100svh * 1672 / 941);
-    translate: -50% 0;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+/* The drawn slit, in the photo's pixel coordinates. `slice` + xMidYMid crops
+   exactly like object-fit: cover + 50% 50%, so it lands on the photo's slit.
+   No transform-origin here: GSAP sets the SVG origin itself. */
+.door-ink {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.door-ink--mobile {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .door-ink--desktop {
+    display: none;
   }
+
+  .door-ink--mobile {
+    display: block;
+  }
+}
+
+/* Final state without JS: the photo alone, the drawn slit hidden. */
+.door-ink__slit {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Dust floating in the light. Same box as the photo, just above it. */
+.scene__dust {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1; /* above .scene__media (it comes after it), below the text */
+  width: 100%;
+  height: 100svh;
+  pointer-events: none;
+  mix-blend-mode: screen;
 }
 
 /* --- Header -------------------------------------------------------------- */
@@ -169,8 +208,11 @@
   padding: 40px var(--gutter) 56px;
 }
 
-/* The door, opened wider: a broad, soft column of gold behind the laptop. */
+/* The door, opened wider: a broad, soft column of gold behind the laptop.
+   DISABLED for now: it grew from the old centered light column, which the
+   new door photo doesn't have. Will come back when the reveal is redone. */
 .hero__glow {
+  display: none;
   position: absolute;
   inset-block: 0;
   left: 50%;
@@ -323,7 +365,7 @@
   }
 
   /* Promote only what moves to its own GPU layer. */
-  .js .scene__bg,
+  .js .scene__media,
   .js .hero__intro,
   .js .hero__glow,
   .js .laptop {
