@@ -127,6 +127,7 @@ export function initIntro({ getLenis }) {
         gsap.set([header, ...titleLines, button, picture, skip], { clearProps: 'all' });
         gsap.set(media, { clearProps: 'transform' });
         gsap.set(slit, { clearProps: 'all' }); // back to the CSS default: hidden
+        gsap.set(media.querySelector('.hero-title-svg'), { clearProps: 'opacity,visibility' });
         getLenis()?.start();
       }
 
@@ -135,6 +136,11 @@ export function initIntro({ getLenis }) {
         // ctx.add: the timeline belongs to this matchMedia context, so a
         // rotation kills it and reverts its styles before the rebuild.
         ctx.add(() => {
+          // The big OPEN and its copy of the door are hidden at the start, like the
+          // photo: on black, only the slit shows, then the door opens, then they
+          // all appear together with the photo.
+          const titleSvg = media.querySelector('.hero-title-svg');
+          gsap.set(titleSvg, { autoAlpha: 0 });
           dust.start();
           tl = gsap.timeline({ onComplete: done });
           tl.addLabel('closed', 0)
@@ -155,7 +161,7 @@ export function initIntro({ getLenis }) {
             )
             .addLabel('open', 1.15)
             .to(slit, { scaleX: 1, duration: 1.3, ease: 'power2.inOut' }, 'open')
-            .to(picture, { autoAlpha: 1, duration: 1.5, ease: 'power2.in' }, 'open+=0.15')
+            .to([picture, titleSvg], { autoAlpha: 1, duration: 1.5, ease: 'power2.in' }, 'open+=0.15')
             .to(media, { scale: 1, duration: 2.2, ease: 'power3.out' }, 'open')
             .to(slit, { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut' }, 'open+=1.2')
             .to(dust.state, { level: 1, duration: 1.6, ease: 'power1.inOut' }, 'open+=0.6')
