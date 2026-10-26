@@ -198,9 +198,23 @@
     gap: 64px;
   }
 
-  .process__track,
+  /* The line runs down the left, through the dots (dot centre = 8px). */
+  .process__track {
+    top: 14px;
+    right: auto;
+    bottom: 0;
+    left: 7px;
+    width: 2px;
+    height: auto;
+  }
+
   .process__lit {
-    display: none;
+    top: 14px;
+    left: 6px;
+    width: 4px;
+    height: calc(100% - 14px);
+    transform-origin: 50% 0;
+    background: linear-gradient(180deg, rgb(242 192 122 / 0.25) 0%, #f2c07a 30%, #fff1d9 100%);
   }
 
   .process__steps {

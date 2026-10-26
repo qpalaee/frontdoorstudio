@@ -21,9 +21,12 @@ export function initServicesProcess() {
     const r = el.getBoundingClientRect();
     return { x: r.left - s.left, y: r.top - s.top, w: r.width, h: r.height };
   };
+  // The light starts just UNDER the cards, not behind them: behind the frosted
+  // glass it looked blurred inside each card and sharp outside, so it seemed
+  // cut by the card edges ("a rectangle"). 170px ≈ the visible radius of its glow.
   const startPos = () => {
     const c = rel(cards);
-    return { x: c.x + c.w / 2, y: c.y + c.h * 0.95 };
+    return { x: c.x + c.w / 2, y: c.y + c.h + 170 };
   };
   const endPos = () => {
     const l = rel(line);
@@ -70,7 +73,9 @@ export function initServicesProcess() {
           scaleY: wide ? 0.32 : 0.5,
           ease: 'power1.inOut',
         },
-      );
+      )
+      // It rises out of the dark under the cards instead of being already there.
+      .fromTo('.light-travel', { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'none' }, 0);
 
     if (wide) {
       // The light runs along the line and lights each step
@@ -92,9 +97,23 @@ export function initServicesProcess() {
         );
       });
     } else {
-      gsap.set('.process__step', { opacity: 0.32 });
-      gsap.utils.toArray('.process__step').forEach((step) => {
-        gsap.to(step, { opacity: 1, scrollTrigger: { trigger: step, start: 'top 75%', end: 'top 55%', scrub: 0.5 } });
+      // Phones: the same idea, vertical. The line fills down the left side, and
+      // each step slides up, fades in and lights its dot when the line reaches it.
+      const steps = gsap.utils.toArray('.process__step');
+      gsap.set('.process__lit', { scaleY: 0 });
+      gsap.set(steps, { opacity: 0.2, y: 24 });
+      gsap.set('.process__dot i', { opacity: 0 });
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: line, start: 'top 70%', end: 'bottom 60%', scrub: 0.6 },
+      });
+      tl.to('.process__lit', { scaleY: 1, ease: 'none', duration: 1 }, 0);
+      steps.forEach((step, i) => {
+        const at = (i / steps.length) * 0.95;
+        tl.to(step, { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, at).to(
+          step.querySelector('.process__dot i'),
+          { opacity: 1, duration: 0.08 },
+          at,
+        );
       });
     }
   });

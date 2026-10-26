@@ -7,10 +7,15 @@ import { initEnding } from './ending.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Phones: the address bar showing/hiding resizes the viewport while scrolling.
+// Without this, every resize re-measures the pin and it jumps.
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 // One easing family for the whole site. CSS uses the same curve (--ease-out).
 const EASE = 'power2.out';
 
-// These two queries must stay in sync with the media queries in hero.css.
+// Both use the pinned "stage" layout from hero.css (motion allowed); the width
+// only changes how long the pin lasts.
 const DESKTOP_MOTION = '(min-width: 861px) and (prefers-reduced-motion: no-preference)';
 const MOBILE_MOTION = '(max-width: 860px) and (prefers-reduced-motion: no-preference)';
 const MOTION_OK = '(prefers-reduced-motion: no-preference)';
@@ -34,7 +39,9 @@ let lenis = null;
    in the same frame and the pin never jitters.
    -------------------------------------------------------------------------- */
 function initSmoothScroll() {
-  lenis = new Lenis();
+  // anchors: clicks on in-page links (#contact, #process…) glide to the section
+  // instead of jumping. Same smooth scroll as the mouse wheel.
+  lenis = new Lenis({ anchors: true });
 
   // Every time Lenis moves the page, ScrollTrigger recalculates progress.
   lenis.on('scroll', ScrollTrigger.update);
@@ -54,17 +61,17 @@ function initSmoothScroll() {
 }
 
 /* --------------------------------------------------------------------------
-   Desktop: pin the scene and scrub one timeline over 200vh of scroll.
-   The timeline is 1 second long, so each position below reads as a
-   percentage: 0.25 = 25% of the scroll.
+   Pin the scene and scrub one timeline: 200vh of scroll on desktop, 120vh on
+   phones (same story, shorter). The timeline is 1 second long, so each
+   position below reads as a percentage: 0.25 = 25% of the scroll.
    -------------------------------------------------------------------------- */
-function buildPinnedReveal() {
+function buildPinnedReveal({ distance = '+=200%', rise = 0.5 } = {}) {
   const tl = gsap.timeline({
     defaults: { ease: EASE },
     scrollTrigger: {
       trigger: scene,
       start: 'top top',
-      end: '+=200%',
+      end: distance,
       pin: true,
       scrub: 1, // the animation trails the scroll by ~1s, which feels smooth
       invalidateOnRefresh: true, // recompute the 50vh start on resize
@@ -85,7 +92,7 @@ function buildPinnedReveal() {
   // 25–90%: the laptop rises out of the light, tilted back, then settles straight.
   tl.fromTo(
     hero.laptop,
-    { y: () => window.innerHeight * 0.5, rotateX: 25, scale: 0.85, autoAlpha: 0 },
+    { y: () => window.innerHeight * rise, rotateX: 25, scale: 0.85, autoAlpha: 0 },
     { y: 0, rotateX: 0, scale: 1, autoAlpha: 1, duration: 0.65 },
     0.25,
   );
@@ -95,8 +102,11 @@ function buildPinnedReveal() {
 }
 
 /* --------------------------------------------------------------------------
-   Phones: no pin. The laptop simply rises and fades in as it enters the screen.
+   OLD phone version (no pin: the laptop sat under the hero and rose as it
+   entered the screen). Replaced by the pinned reveal so the laptop appears
+   over the hero on phones too. Kept to go back if needed; not used.
    -------------------------------------------------------------------------- */
+// eslint-disable-next-line no-unused-vars
 function buildMobileReveal() {
   const tl = gsap.timeline({
     defaults: { ease: EASE },
@@ -120,8 +130,8 @@ function buildMobileReveal() {
    -------------------------------------------------------------------------- */
 const mm = gsap.matchMedia();
 
-mm.add(DESKTOP_MOTION, buildPinnedReveal);
-mm.add(MOBILE_MOTION, buildMobileReveal);
+mm.add(DESKTOP_MOTION, () => buildPinnedReveal());
+mm.add(MOBILE_MOTION, () => buildPinnedReveal({ distance: '+=120%', rise: 0.35 }));
 
 // Reduced motion: no smooth scroll, no pin, no scrub. CSS shows everything statically.
 mm.add(MOTION_OK, initSmoothScroll);

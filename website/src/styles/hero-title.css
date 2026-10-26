@@ -1,0 +1,80 @@
+/* Hero title: "We OPEN doors for brands."
+   OPEN is the SVG from hero-title.js. The two small lines are HTML. */
+
+/* The SVG lies exactly over the photo and inherits its intro scale (1.05 -> 1). */
+.hero-title-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero__title {
+  /* The h1 is a wrapper for the two lines; OPEN itself is read from .sr-only. */
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  pointer-events: none;
+  font-family: 'Jost', 'Futura', 'Avenir Next', system-ui, sans-serif;
+  font-weight: 300;
+  color: #FFE7C2;
+  text-align: center;
+}
+
+.hero__title-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  font-size: clamp(1.25rem, 2.7vw, 3.25rem);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+/* "We" sits above the word, "doors for brands." just under the horizon.
+   These match the desktop photo; Claude Code adjusts them for the portrait one. */
+.hero__title-line--top { top: 25%; }
+.hero__title-line--bottom { top: 64%; }
+
+.hero__subtitle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(64% + clamp(2rem, 3.6vw, 4.25rem));
+  margin: 0;
+  padding-inline: 16px;
+  font-family: 'Jost', 'Futura', 'Avenir Next', system-ui, sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.875rem, 1.3vw, 1.25rem);
+  letter-spacing: 0.02em;
+  color: #D9CFC2;
+  opacity: 0.85;
+  text-align: center;
+  /* keeps the line readable where it crosses the bright wedge on the sand */
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 22px rgba(0, 0, 0, 0.7);
+}
+
+/* Same query as the portrait <source> in index.html. */
+@media (orientation: portrait) {
+  .hero__title-line { font-size: clamp(1.25rem, 6.2vw, 2rem); }
+  /* Just above OPEN. In portrait, OPEN's top lands between ~51% (375x667)
+     and ~55% (390x844) of the photo, so 44% clears it on short phones too. */
+  .hero__title-line--top { top: 44%; }
+  .hero__subtitle {
+    font-size: clamp(0.875rem, 3.6vw, 1rem);
+    max-width: 30ch;
+    margin-inline: auto;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

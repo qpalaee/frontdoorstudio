@@ -4,7 +4,7 @@
 
 /* Before the first paint (set by the inline script in index.html): hidden,
    so the photo doesn't flash before the intro takes over. */
-.intro-pending :is(.scene__bg, .site-header, .hero__title, .hero__lead, .hero__cta) {
+.intro-pending :is(.scene__bg, .site-header, [data-hero-reveal], .hero__cta) {
   opacity: 0;
   visibility: hidden;
 }

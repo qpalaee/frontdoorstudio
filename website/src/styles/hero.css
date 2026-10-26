@@ -2,10 +2,10 @@
    Scene: header + hero. Two layouts share the same HTML:
 
    1. "Stacked" (default): the hero text fills the first screen and the laptop
-      sits under it as a normal block. Used on phones, with reduced motion,
-      and if JavaScript fails.
-   2. "Stage" (desktop + motion allowed + JS): everything is stacked on top of
-      each other inside one 100svh box, which main.js pins and animates.
+      sits under it as a normal block. Used with reduced motion, and if
+      JavaScript fails.
+   2. "Stage" (motion allowed + JS, desktop and phones): everything is stacked
+      on top of each other inside one 100svh box, which main.js pins and animates.
    ========================================================================== */
 
 .scene {
@@ -14,14 +14,6 @@
   /* The laptop is never wider than 1040px, nor than the screen minus its base. */
   --laptop-w: min(1040px, 100% - 2 * var(--laptop-overhang));
 
-  /* Where the top of the door's slit of light lands on screen.
-     The photo is drawn like cover, centered (object-position 50% 50%), at the
-     scale max(100vw / 3344, 100svh / 1882). The slit starts at y = 688, which is
-     253px above the photo's center (941): so on screen it sits 253 x scale
-     above the middle of the first screen. */
-  --column-top: calc(50svh - max(7.566vw, 13.443svh));
-  /* The heading must end 24px above the light, under the header. */
-  --sky-bottom: calc(var(--column-top) - 24px);
 
   position: relative;
   overflow: hidden; /* the base overhang and the glow must never cause sideways scroll */
@@ -31,13 +23,6 @@
 
 /* --- Background: photo + drawn slit + dust ------------------------------ */
 
-/* Phones and tablets held upright get the portrait photo (see index.html).
-   Its slit starts at y = 1119 of 3072: 417px above the center (1536). */
-@media (orientation: portrait) {
-  .scene {
-    --column-top: calc(50svh - max(20.361vw, 13.574svh));
-  }
-}
 
 /* The intro scales this wrapper and the scroll reveal fades it. */
 .scene__media {
@@ -153,41 +138,6 @@
 .hero__intro {
   position: relative;
   height: calc(100svh - var(--header-h));
-}
-
-/* The heading fills the dark sky and sticks to its bottom edge,
-   so it always ends just above the light, whatever the screen size. */
-.hero__heading {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 16px;
-  height: calc(var(--sky-bottom) - var(--header-h));
-  padding: 16px var(--gutter) 0;
-  text-align: center;
-}
-
-.hero__title {
-  /* 62px when the sky is tall enough. On short or very wide screens the light
-     starts higher, so the title shrinks to keep fitting above it.
-     46px = gap + subtitle; 2.08 = two lines x line-height 1.04. */
-  --sky-room: calc(var(--sky-bottom) - var(--header-h) - 16px);
-
-  font-family: var(--font-display);
-  font-size: clamp(32px, min(6.4vw, (var(--sky-room) - 46px) / 2.08), 62px);
-  font-weight: 600;
-  line-height: 1.04;
-  letter-spacing: -0.035em;
-  background: linear-gradient(180deg, #fff 0%, #fff6e8 60%, #f2c995 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.hero__lead {
-  color: var(--ink-2);
-  font-size: 18px;
 }
 
 /* Rests on the lit sand at the foot of the light column. */
@@ -316,10 +266,6 @@
     margin-left: -50%;
   }
 
-  /* Phones have little sky: a smaller title that still fits on two lines. */
-  .hero__title {
-    font-size: clamp(26px, min(7.2vw, (var(--sky-room) - 72px) / 2.08), 40px);
-  }
 
   /* The three labels don't fit on one line: name on top, details under it. */
   .work-caption__name {
@@ -328,9 +274,9 @@
   }
 }
 
-/* --- Stage layout (desktop, motion allowed, JS running) ------------------- */
+/* --- Stage layout (motion allowed, JS running: desktop and phones) ------- */
 
-@media (min-width: 861px) and (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) {
   .js .scene {
     /* Note 1: the laptop also shrinks on short screens (e.g. 1440x780), so the
        laptop and its caption always fit under the header.
@@ -379,4 +325,17 @@
   .js .laptop {
     transform-origin: 50% 100%; /* tilts back from its base, like a real lid */
   }
+}
+
+/* --- Title box ------------------------------------------------------------ */
+
+/* Same box as the photo (the first screen, header included), so the title
+   lines in hero-title.css can be placed in % of the photo's height. */
+.hero__titlebox {
+  position: absolute;
+  top: calc(-1 * var(--header-h));
+  right: 0;
+  left: 0;
+  height: 100svh;
+  pointer-events: none;
 }

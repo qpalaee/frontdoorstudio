@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import { createDust } from './dust.js';
+import { createHeroTitle, SCENES } from './hero-title.js';
 
 /* --------------------------------------------------------------------------
    Intro (first visit of the session): black screen → the door's slit
@@ -43,8 +44,7 @@ export function initIntro({ getLenis }) {
   const canvas = scene.querySelector('[data-hero-dust]');
   const skip = scene.querySelector('[data-intro-skip]');
   const header = scene.querySelector('.site-header');
-  const title = scene.querySelector('.hero__title');
-  const subtitle = scene.querySelector('.hero__lead');
+  const titleLines = scene.querySelectorAll('[data-hero-reveal]'); // "We", "doors for brands.", subtitle
   const button = scene.querySelector('.hero__cta');
   const slits = {
     portrait: scene.querySelector('.door-ink--mobile .door-ink__slit'),
@@ -56,12 +56,27 @@ export function initIntro({ getLenis }) {
   let introStarted = false;
   let tl = null;
 
-  skip.addEventListener('click', () => tl?.progress(1));
+  // The big OPEN, drawn on the photo. Created once the photo is decoded, with the
+  // URL the <picture> actually loaded, so the door copy in the SVG is the same file.
+  const PORTRAIT = '(orientation: portrait)'; // same query as the portrait <source>
+  let heroTitle = null;
+  const heroTitleReady = imageReady(img).then(() => {
+    const scene = window.matchMedia(PORTRAIT).matches ? SCENES.mobile : SCENES.desktop;
+    if (img.currentSrc) scene.src = img.currentSrc;
+    heroTitle = createHeroTitle({ mount: media, mobileQuery: PORTRAIT });
+    return heroTitle;
+  });
+
+  skip.addEventListener('click', () => {
+    tl?.progress(1);
+    heroTitle?.setFinal();
+  });
 
   function showFinal() {
     root.classList.remove('intro-pending', 'intro-running');
     dust.state.level = 1;
     dust.start();
+    heroTitleReady.then((title) => title.setFinal());
   }
 
   // Rotating the device rebuilds this with the SVG of the new orientation.
@@ -81,6 +96,7 @@ export function initIntro({ getLenis }) {
         root.classList.remove('intro-pending', 'intro-running');
         dust.state.level = 1;
         dust.still();
+        heroTitleReady.then((title) => title.setFinal());
         return;
       }
 
@@ -95,7 +111,7 @@ export function initIntro({ getLenis }) {
       // Start states. The CSS default is the final state (works without JS).
       gsap.set(slit, { autoAlpha: 0, scaleX: 0.08, transformOrigin: '0% 50%' });
       gsap.set(picture, { autoAlpha: 0 });
-      gsap.set([header, title, subtitle, button], { autoAlpha: 0, y: 16 });
+      gsap.set([header, ...titleLines, button], { autoAlpha: 0, y: 16 });
       gsap.set(media, { scale: 1.05, transformOrigin: '50% 55%' });
       gsap.set(skip, { autoAlpha: 1 });
       dust.state.level = 0;
@@ -108,13 +124,13 @@ export function initIntro({ getLenis }) {
       function done() {
         markSeen();
         root.classList.remove('intro-running');
-        gsap.set([header, title, subtitle, button, picture, skip], { clearProps: 'all' });
+        gsap.set([header, ...titleLines, button, picture, skip], { clearProps: 'all' });
         gsap.set(media, { clearProps: 'transform' });
         gsap.set(slit, { clearProps: 'all' }); // back to the CSS default: hidden
         getLenis()?.start();
       }
 
-      imageReady(img).then(() => {
+      heroTitleReady.then((heroTitle) => {
         if (cancelled) return;
         // ctx.add: the timeline belongs to this matchMedia context, so a
         // rotation kills it and reverts its styles before the rebuild.
@@ -143,11 +159,15 @@ export function initIntro({ getLenis }) {
             .to(media, { scale: 1, duration: 2.2, ease: 'power3.out' }, 'open')
             .to(slit, { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut' }, 'open+=1.2')
             .to(dust.state, { level: 1, duration: 1.6, ease: 'power1.inOut' }, 'open+=0.6')
-            .addLabel('site', 2.7)
+            // OPEN is painted by a wave of light from the slit, from open+0.4 to open+2.2.
+            .add(heroTitle.paint(1.8), 'open+=0.4')
+            // The reveal step waits until the paint is ~80% done (open + 0.4 + 1.44 ≈ 3.0).
+            // It was at 2.7 before the new title; slit and photo timings are unchanged.
+            .addLabel('site', 3.0)
             .set(skip, { autoAlpha: 0 }, 'site')
             .to(header, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 'site')
             .to(
-              [title, subtitle],
+              titleLines,
               { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
               'site+=0.05',
             )

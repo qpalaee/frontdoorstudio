@@ -57,8 +57,8 @@
       fetchpriority="high"
     />
 
-    <script type="module" crossorigin src="/assets/index-DdHcaiEf.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-FidbX7En.css">
+    <script type="module" crossorigin src="/assets/index-zhOkpUQC.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CvBwxiAN.css">
   </head>
 
   <body>
@@ -151,9 +151,23 @@
         <!-- First screen: the heading sits in the sky, the button on the sand.
              They fade out together, so they share one wrapper. -->
         <div class="hero__intro" data-hero-intro>
+          <!-- OLD title, kept to go back if needed (styles in src/styles/hero-title-old.css):
           <div class="hero__heading">
             <h1 class="hero__title" id="hero-title">Your door<br />to the internet.</h1>
             <p class="hero__lead">Websites and social media for businesses in Morocco.</p>
+          </div>
+          -->
+
+          <!-- "We OPEN doors for brands." The big OPEN is an SVG drawn on the photo
+               (src/hero-title.js). This box has the photo's size and position, so the
+               two lines and the subtitle can be placed in % of the photo. -->
+          <div class="hero__titlebox">
+            <h1 class="hero__title" id="hero-title">
+              <span class="hero__title-line hero__title-line--top" data-hero-reveal>We</span>
+              <span class="sr-only">open</span>
+              <span class="hero__title-line hero__title-line--bottom" data-hero-reveal>doors for brands.</span>
+            </h1>
+            <p class="hero__subtitle" data-hero-reveal>Premium websites and social media in Morocco.</p>
           </div>
           <a class="glass-button hero__cta" href="#contact">Start your site</a>
           <!-- Only shown while the intro plays. -->
