@@ -41,3 +41,11 @@
 .intro-running .intro-skip {
   display: inline-flex;
 }
+
+/* Short landscape phones: above the CTA would land on OPEN. The bottom-right
+   corner is free there (the CTA is centered and hidden while Skip shows). */
+@media (orientation: landscape) and (max-height: 500px) {
+  .intro-skip {
+    bottom: 16px;
+  }
+}

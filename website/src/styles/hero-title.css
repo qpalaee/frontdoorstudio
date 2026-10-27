@@ -26,7 +26,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  font-size: clamp(1.25rem, 2.7vw, 3.25rem);
+  font-size: var(--hero-line-size);
   letter-spacing: 0.02em;
   line-height: 1.1;
 }
@@ -34,18 +34,19 @@
 /* "We" sits above the word, "doors for brands." just under the horizon.
    These match the desktop photo; the portrait values are in the media query below. */
 .hero__title-line--top { top: 25%; }
-.hero__title-line--bottom { top: 64%; }
+.hero__title-line--bottom { top: var(--hero-line2-top); }
 
 .hero__subtitle {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(64% + clamp(2rem, 3.6vw, 4.25rem));
+  top: calc(var(--hero-line2-top) + var(--hero-sub-gap));
   margin: 0;
   padding-inline: 16px;
   font-family: var(--font-body);
   font-weight: 300;
-  font-size: clamp(0.875rem, 1.3vw, 1.25rem);
+  font-size: var(--hero-sub-size);
+  line-height: 1.5;
   letter-spacing: 0.02em;
   color: var(--ink-2);
   opacity: 0.85;
@@ -56,12 +57,17 @@
 
 /* Same query as the portrait <source> in index.html. */
 @media (orientation: portrait) {
-  .hero__title-line { font-size: clamp(1.25rem, 6.2vw, 2rem); }
+  .hero {
+    --hero-line-size: clamp(1.25rem, 6.2vw, 2rem);
+    --hero-sub-size: clamp(0.875rem, 3.6vw, 1rem);
+    /* The lines are bigger here: the gap follows them, so the subtitle never
+       touches "doors for brands." (it did at 768x1024). */
+    --hero-sub-gap: calc(var(--hero-line-size) * 1.4);
+  }
   /* Just above OPEN. In portrait, OPEN's top lands between ~51% (375x667)
      and ~55% (390x844) of the photo, so 44% clears it on short phones too. */
   .hero__title-line--top { top: 44%; }
   .hero__subtitle {
-    font-size: clamp(0.875rem, 3.6vw, 1rem);
     max-width: 30ch;
     margin-inline: auto;
   }
