@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import { createDust } from './dust.js';
-import { createHeroTitle, SCENES } from './hero-title.js';
+import { createHeroTitle } from './hero-title.js';
 
 /* --------------------------------------------------------------------------
    Intro (first visit of the session): black screen → the door's slit
@@ -56,14 +56,13 @@ export function initIntro({ getLenis }) {
   let introStarted = false;
   let tl = null;
 
-  // The big OPEN, drawn on the photo. Created once the photo is decoded, with the
-  // URL the <picture> actually loaded, so the door copy in the SVG is the same file.
+  // The big OPEN, drawn on the photo. Created once the photo is decoded; it reads
+  // the file the <picture> actually loaded (and again after a rotation), so the
+  // door copy in the SVG is the same cached file, whatever format the browser picked.
   const PORTRAIT = '(orientation: portrait)'; // same query as the portrait <source>
   let heroTitle = null;
   const heroTitleReady = imageReady(img).then(() => {
-    const scene = window.matchMedia(PORTRAIT).matches ? SCENES.mobile : SCENES.desktop;
-    if (img.currentSrc) scene.src = img.currentSrc;
-    heroTitle = createHeroTitle({ mount: media, mobileQuery: PORTRAIT });
+    heroTitle = createHeroTitle({ mount: media, img, mobileQuery: PORTRAIT });
     return heroTitle;
   });
 

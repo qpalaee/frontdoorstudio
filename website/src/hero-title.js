@@ -22,9 +22,6 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
  */
 export const SCENES = {
   desktop: {
-    // Replaced at runtime by the URL the <picture> actually loaded (see intro.js),
-    // so the door copy is the same cached file.
-    src: '/images/hero/hero-door-desktop-2400.avif',
     width: 3344,
     height: 1882,
     horizon: 1150, // y of the line where the sand meets the black wall
@@ -39,7 +36,6 @@ export const SCENES = {
   // Measured on hero-door-mobile.png (2048x3072) with the same method that gives
   // the desktop values above (horizon 1150, slit 1612, door right 1788).
   mobile: {
-    src: '/images/hero/hero-door-mobile-1536.avif',
     width: 2048,
     height: 3072,
     horizon: 1859,
@@ -130,11 +126,24 @@ function visibleSpan(scene, box) {
 /* ---------- main ---------- */
 
 /**
+ * The file the <picture> loaded, if it is the photo of this scene. Right after a
+ * rotation the <img> still shows the other orientation's file until the new one
+ * loads, so the orientation of the loaded image is checked against the scene.
+ */
+function loadedSrc(img, scene) {
+  if (!img.currentSrc || !img.naturalWidth) return null;
+  const imgPortrait = img.naturalHeight > img.naturalWidth;
+  const scenePortrait = scene.height > scene.width;
+  return imgPortrait === scenePortrait ? img.currentSrc : null;
+}
+
+/**
  * @param {object} opts
  * @param {HTMLElement} opts.mount   Element that holds the hero photo (same box, same transforms).
+ * @param {HTMLImageElement} opts.img  The hero <img>. Its loaded file is reused for the door copy.
  * @param {string} opts.mobileQuery  Same media query the <picture> uses to switch to the portrait image.
  */
-export function createHeroTitle({ mount, mobileQuery = '(max-aspect-ratio: 3/4)' }) {
+export function createHeroTitle({ mount, img, mobileQuery = '(max-aspect-ratio: 3/4)' }) {
   const mq = window.matchMedia(mobileQuery);
   const svg = el('svg', {
     class: 'hero-title-svg',
@@ -147,7 +156,10 @@ export function createHeroTitle({ mount, mobileQuery = '(max-aspect-ratio: 3/4)'
   const state = { progress: 0, layout: null };
 
   function build() {
-    const scene = mq.matches && SCENES.mobile ? SCENES.mobile : SCENES.desktop;
+    const scene = mq.matches ? SCENES.mobile : SCENES.desktop;
+    const src = loadedSrc(img, scene);
+    // The photo of this orientation is still loading: build again once it is there.
+    if (!src) img.addEventListener('load', build, { once: true });
     const box = mount.getBoundingClientRect();
     const { x0, x1 } = visibleSpan(scene, box);
 
@@ -211,12 +223,14 @@ export function createHeroTitle({ mount, mobileQuery = '(max-aspect-ratio: 3/4)'
       el('g', { fill: 'url(#ht-lit)', mask: 'url(#ht-mask-op)' }, clone(op.paths)),
       el('g', { fill: COLORS.silhouetteEN }, en.paths),
       el('g', { fill: 'url(#ht-shade)', mask: 'url(#ht-mask-en)' }, clone(en.paths)),
-      // The door, cut from the same photo, sits above the letters.
-      el('image', {
-        href: scene.src, width: scene.width, height: scene.height,
-        'clip-path': 'url(#ht-door)', preserveAspectRatio: 'none',
-      }),
     );
+    // The door, cut from the same photo, sits above the letters.
+    if (src) {
+      svg.append(el('image', {
+        href: src, width: scene.width, height: scene.height,
+        'clip-path': 'url(#ht-door)', preserveAspectRatio: 'none',
+      }));
+    }
 
     state.layout = { waveOP, waveEN, opStart: op.start, opEnd, enStart, enEnd: en.end, feather };
     render(state.progress);
@@ -266,6 +280,7 @@ export function createHeroTitle({ mount, mobileQuery = '(max-aspect-ratio: 3/4)'
     },
     destroy() {
       window.removeEventListener('resize', onResize);
+      img.removeEventListener('load', build);
       mq.removeEventListener('change', build);
       svg.remove();
     },
