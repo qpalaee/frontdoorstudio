@@ -29,7 +29,8 @@
 .services__word {
   margin: 18px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(64px, 13.6vw, 200px);
+  /* The word is about 5.9em wide: never wider than the screen minus the gutters. */
+  font-size: min(clamp(40px, 13.6vw, 200px), (100vw - 2 * var(--gutter)) / 6.1);
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.04em;
@@ -250,10 +251,12 @@
     min-height: 0;
   }
 
+  /* Stacked cards are tall: overlapping the word here would hide most of it.
+     They start just under the letters instead (their glass still catches the glow). */
   .services__cards {
     grid-template-columns: 1fr;
     max-width: 480px;
-    margin-top: -24px;
+    margin-top: 20px;
   }
 
   .services__card {
