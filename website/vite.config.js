@@ -18,6 +18,34 @@ function siteConfig() {
   };
 }
 
+// robots.txt and sitemap.xml, written into the build with the URL from site.config.js.
+function seoFiles() {
+  return {
+    name: 'seo-files',
+    apply: 'build',
+    generateBundle() {
+      const today = new Date().toISOString().slice(0, 10);
+      this.emitFile({
+        type: 'asset',
+        fileName: 'robots.txt',
+        source: `User-agent: *\nAllow: /\n\nSitemap: ${SITE.url}/sitemap.xml\n`,
+      });
+      this.emitFile({
+        type: 'asset',
+        fileName: 'sitemap.xml',
+        source: `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${SITE.url}/</loc>
+    <lastmod>${today}</lastmod>
+  </url>
+</urlset>
+`,
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [siteConfig()],
+  plugins: [siteConfig(), seoFiles()],
 });

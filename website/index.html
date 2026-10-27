@@ -6,6 +6,46 @@
     <title>Frontdoor Studio · Websites and social media in Morocco</title>
     <meta name="description" content="Websites and social media for businesses in Morocco." />
     <meta name="theme-color" content="#050403" />
+    <link rel="canonical" href="{{site.url}}/" />
+
+    <!-- Link previews (WhatsApp, Instagram, Facebook, X…). The image is the hero, 1200x630. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{site.name}}" />
+    <meta property="og:title" content="Frontdoor Studio · Websites and social media in Morocco" />
+    <meta property="og:description" content="Premium websites and social media for businesses in Morocco." />
+    <meta property="og:url" content="{{site.url}}/" />
+    <meta property="og:image" content="{{site.url}}/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="We OPEN doors for brands. A door of light in the desert, Frontdoor Studio." />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Frontdoor Studio · Websites and social media in Morocco" />
+    <meta name="twitter:description" content="Premium websites and social media for businesses in Morocco." />
+    <meta name="twitter:image" content="{{site.url}}/og-image.jpg" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "{{site.name}}",
+        "url": "{{site.url}}/",
+        "logo": "{{site.url}}/icon-512.png",
+        "image": "{{site.url}}/og-image.jpg",
+        "description": "Websites and social media for businesses in Morocco.",
+        "areaServed": { "@type": "Country", "name": "Morocco" },
+        "address": { "@type": "PostalAddress", "addressCountry": "MA" },
+        "email": "{{site.email}}",
+        "telephone": "{{site.whatsappNumber}}",
+        "sameAs": ["{{link.instagram}}"],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "email": "{{site.email}}",
+          "telephone": "{{site.whatsappNumber}}"
+        }
+      }
+    </script>
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
