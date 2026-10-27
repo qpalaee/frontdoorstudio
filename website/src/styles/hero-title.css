@@ -32,7 +32,7 @@
 }
 
 /* "We" sits above the word, "doors for brands." just under the horizon.
-   These match the desktop photo; Claude Code adjusts them for the portrait one. */
+   These match the desktop photo; the portrait values are in the media query below. */
 .hero__title-line--top { top: 25%; }
 .hero__title-line--bottom { top: 64%; }
 

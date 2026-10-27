@@ -16,7 +16,7 @@
 
 
   position: relative;
-  overflow: hidden; /* the base overhang and the glow must never cause sideways scroll */
+  overflow: hidden; /* the laptop base overhang must never cause sideways scroll */
   isolation: isolate; /* keeps the z-index values below local to the scene */
   background: var(--bg);
 }
@@ -149,40 +149,13 @@
   margin-inline: auto;
 }
 
-/* --- Work: glow + laptop + caption --------------------------------------- */
+/* --- Work: laptop + caption -------------------------------------------- */
 
 .hero__work {
   position: relative;
   display: flex;
   justify-content: center;
   padding: 40px var(--gutter) 56px;
-}
-
-/* The door, opened wider: a broad, soft column of gold behind the laptop.
-   DISABLED for now: it grew from the old centered light column, which the
-   new door photo doesn't have. Will come back when the reveal is redone. */
-.hero__glow {
-  display: none;
-  position: absolute;
-  inset-block: 0;
-  left: 50%;
-  z-index: -1;
-  width: 760px;
-  margin-left: -380px;
-  background: linear-gradient(
-    90deg,
-    rgb(var(--amber-rgb) / 0) 0%,
-    rgb(var(--amber-rgb) / 0.1) 30%,
-    rgb(242 192 122 / 0.16) 50%,
-    rgb(var(--amber-rgb) / 0.1) 70%,
-    rgb(var(--amber-rgb) / 0) 100%
-  );
-  filter: blur(30px);
-  pointer-events: none;
-  /* Fades out before the bottom of the hero, so the light isn't cut by a hard
-     edge where the Services section starts. */
-  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
-  mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
 }
 
 .hero__showcase {
@@ -260,12 +233,6 @@
     display: none;
   }
 
-  .hero__glow {
-    /* 760px would be wider than the phone; keep the same shape, scaled down. */
-    width: 100%;
-    margin-left: -50%;
-  }
-
 
   /* The three labels don't fit on one line: name on top, details under it. */
   .work-caption__name {
@@ -303,7 +270,6 @@
   }
 
   /* Hidden before the first paint; main.js then animates them in. */
-  .js .hero__glow,
   .js .laptop,
   .js .work-caption {
     opacity: 0;
@@ -313,7 +279,6 @@
   /* Promote only what moves to its own GPU layer. */
   .js .scene__media,
   .js .hero__intro,
-  .js .hero__glow,
   .js .laptop {
     will-change: transform, opacity;
   }

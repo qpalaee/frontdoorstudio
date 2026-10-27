@@ -26,7 +26,6 @@ const hero = {
   bg: [scene.querySelector('[data-scene-media]'), scene.querySelector('[data-hero-dust]')],
   intro: scene.querySelector('[data-hero-intro]'),
   work: scene.querySelector('[data-hero-work]'),
-  glow: scene.querySelector('[data-hero-glow]'),
   laptop: scene.querySelector('[data-hero-laptop]'),
   caption: scene.querySelector('[data-hero-caption]'),
 };
@@ -87,11 +86,6 @@ function buildPinnedReveal({ distance = '+=200%', rise = 0.5 } = {}) {
   // Same time: the photo fades to black, so only the laptop remains.
   tl.to(hero.bg, { autoAlpha: 0, duration: 0.3 }, 0);
 
-  // 15–60%: "the door opens" (the thin column widening into a broad glow).
-  // DISABLED until the reveal is redone: it grew from the old centered light
-  // column, which the new door photo doesn't have (its slit is left of center).
-  // tl.fromTo(hero.glow, { scaleX: 0.12, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.45, ease: 'power2.inOut' }, 0.15);
-
   // 25–90%: the laptop rises out of the light, tilted back, then settles straight.
   tl.fromTo(
     hero.laptop,
@@ -133,28 +127,6 @@ document.addEventListener(
   },
   true,
 );
-
-/* --------------------------------------------------------------------------
-   OLD phone version (no pin: the laptop sat under the hero and rose as it
-   entered the screen). Replaced by the pinned reveal so the laptop appears
-   over the hero on phones too. Kept to go back if needed; not used.
-   -------------------------------------------------------------------------- */
-// eslint-disable-next-line no-unused-vars
-function buildMobileReveal() {
-  const tl = gsap.timeline({
-    defaults: { ease: EASE },
-    scrollTrigger: {
-      trigger: hero.work,
-      start: 'top 90%', // when the top of the block is near the bottom of the screen
-      end: 'top 30%',
-      scrub: 1,
-    },
-  });
-
-  // Glow widening disabled for now (see buildPinnedReveal).
-  tl.fromTo(hero.laptop, { y: 80, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 0.1)
-    .fromTo(hero.caption, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0.8);
-}
 
 /* --------------------------------------------------------------------------
    matchMedia runs each setup only while its query matches, and undoes it
