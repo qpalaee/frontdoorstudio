@@ -10,8 +10,10 @@
    "bar" (full-width frosted bar) or "pill" (floating glass pill).
    ========================================================================== */
 
+/* Without JS nothing gives it a background: it stays at the top of the page
+   and scrolls away, as before. With JS it is fixed. */
 .site-header {
-  position: fixed;
+  position: absolute;
   inset: 0 0 auto;
   z-index: 50;
   padding-inline: var(--gutter);
@@ -19,6 +21,10 @@
     transform 350ms var(--ease-out),
     background-color 350ms var(--ease-out),
     border-color 350ms var(--ease-out);
+}
+
+.js .site-header {
+  position: fixed;
 }
 
 .site-header.is-hidden {
