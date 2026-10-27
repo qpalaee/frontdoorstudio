@@ -64,9 +64,12 @@
        touches "doors for brands." (it did at 768x1024). */
     --hero-sub-gap: calc(var(--hero-line-size) * 1.4);
   }
-  /* Just above OPEN. In portrait, OPEN's top lands between ~51% (375x667)
-     and ~55% (390x844) of the photo, so 44% clears it on short phones too. */
-  .hero__title-line--top { top: 44%; }
+  /* Above the door, like on desktop (it sat on the door and its light before).
+     The door's top is at 35.7% of the photo's height when the photo fills the
+     height, higher when it fills the width (tablets): 50svh - 21.5vw. */
+  .hero__title-line--top {
+    top: calc(min(35.7svh, 50svh - 21.5vw) - 1.1em - 14px);
+  }
   .hero__subtitle {
     max-width: 30ch;
     margin-inline: auto;
