@@ -57,21 +57,8 @@ const CONFIG = {
   paintDuration: 1.8, // seconds
   // Portrait photo: the door is narrow and right of center, so the room for EN
   // (between the door and the right edge) limits the size of the whole word.
-  portrait: {
-    // 'fit':   the whole word stays on screen (about 55px tall on a 390px phone).
-    // 'bleed': OPEN is sized from the screen width and its outer letters may run
-    //          off the edges (about 80px tall on a 390px phone).
-    mode: 'fit',
-    sideMargin: 0.02, // 'fit': 2% of the visible width on each side
-    bleedCap: 0.2, // 'bleed': cap height as a share of the visible width
-  },
+  portraitSideMargin: 0.02, // 2% of the visible width on each side (5% looked tiny)
 };
-
-// Dev only: ?hero=bleed or ?hero=fit to compare the two portrait layouts.
-if (import.meta.env.DEV) {
-  const mode = new URLSearchParams(location.search).get('hero');
-  if (mode === 'fit' || mode === 'bleed') CONFIG.portrait.mode = mode;
-}
 
 const COLORS = {
   silhouetteOP: '#24170c',
@@ -179,24 +166,19 @@ export function createHeroTitle({ mount, img, mobileQuery = '(max-aspect-ratio: 
     const box = mount.getBoundingClientRect();
     const { x0, x1 } = visibleSpan(scene, box);
 
-    // Size: tied to the door height, then reduced to the room on screen (see CONFIG.portrait).
+    // Size: tied to the door height, then reduced if the word would leave the visible area.
     const doorTop = Math.min(...scene.door.map(([, y]) => y));
     const doorH = scene.horizon - doorTop;
     let scale = (doorH * CONFIG.capToDoor) / CAP_HEIGHT;
     const k = () => scale / 0.54; // spacing was tuned at desktop scale 0.54
-    const portrait = scene === SCENES.mobile;
-    if (portrait && CONFIG.portrait.mode === 'bleed') {
-      scale = Math.min(scale, ((x1 - x0) * CONFIG.portrait.bleedCap) / CAP_HEIGHT);
-    } else {
-      // Fit: as big as the door allows, reduced if the word would leave the visible area.
-      const opW = (GLYPHS.O.adv + GLYPHS.P.adv) * scale;
-      const enW = (GLYPHS.E.adv + GLYPHS.N.adv) * scale;
-      const margin = (x1 - x0) * (portrait ? CONFIG.portrait.sideMargin : CONFIG.sideMargin);
-      const roomLeft = scene.slitX - CONFIG.gapLeft * k() - (x0 + margin);
-      const roomRight = x1 - margin - (scene.doorRight + CONFIG.gapRight * k());
-      const fit = Math.min(1, roomLeft / opW, roomRight / enW);
-      if (fit < 1) scale *= fit;
-    }
+    const opW = (GLYPHS.O.adv + GLYPHS.P.adv) * scale;
+    const enW = (GLYPHS.E.adv + GLYPHS.N.adv) * scale;
+    const side = scene === SCENES.mobile ? CONFIG.portraitSideMargin : CONFIG.sideMargin;
+    const margin = (x1 - x0) * side;
+    const roomLeft = scene.slitX - CONFIG.gapLeft * k() - (x0 + margin);
+    const roomRight = x1 - margin - (scene.doorRight + CONFIG.gapRight * k());
+    const fit = Math.min(1, roomLeft / opW, roomRight / enW);
+    if (fit < 1) scale *= fit;
 
     const opEnd = scene.slitX - CONFIG.gapLeft * k();
     const enStart = scene.doorRight + CONFIG.gapRight * k();
