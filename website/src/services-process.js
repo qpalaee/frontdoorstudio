@@ -117,6 +117,5 @@ export function initServicesProcess() {
       });
     }
   });
-
-  document.fonts.ready.then(() => ScrollTrigger.refresh());
+  // Font loading re-measures every trigger once, in main.js.
 }
