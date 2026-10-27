@@ -24,7 +24,6 @@ export function initHeader({ getLenis, getRestEnd }) {
   const root = document.documentElement;
   const header = document.querySelector('[data-site-header]');
   if (!header) return;
-  if (!header.dataset.style) header.dataset.style = 'bar';
 
   /* ---------- scroll states ---------- */
 

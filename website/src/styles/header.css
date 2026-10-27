@@ -5,9 +5,6 @@
      place and size as before, so the intro and the hero look the same.
    - .is-scrolled (after the hero): a background, more compact.
    - .is-hidden: slid up while scrolling down, back when scrolling up.
-
-   The look of .is-scrolled is chosen with data-style on the <header>:
-   "bar" (full-width frosted bar) or "pill" (floating glass pill).
    ========================================================================== */
 
 /* Without JS nothing gives it a background: it stays at the top of the page
@@ -80,44 +77,21 @@
   font-size: 15px;
 }
 
-/* --- Scrolled: "bar" (default) ------------------------------------------- */
+/* --- Scrolled: a full-width frosted bar ------------------------------------ */
 
-.site-header.is-scrolled[data-style='bar'] {
+.site-header.is-scrolled {
   border-bottom: 1px solid rgb(var(--gold-light-rgb) / 0.14);
   background-color: rgb(var(--bg-rgb) / 0.72);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);
   backdrop-filter: blur(16px) saturate(1.2);
 }
 
-.site-header.is-scrolled[data-style='bar'] .site-header__inner {
+.site-header.is-scrolled .site-header__inner {
   padding-block: 10px;
 }
 
 .site-header.is-scrolled .site-header__logo img {
   height: 32px;
-}
-
-/* --- Scrolled: "pill" ------------------------------------------------------ */
-
-.site-header.is-scrolled[data-style='pill'] {
-  padding-top: 12px;
-}
-
-.site-header.is-scrolled[data-style='pill'] .site-header__inner {
-  max-width: calc(var(--page-max) + 40px);
-  padding: 6px 12px 6px 20px;
-  border: 1px solid rgb(var(--gold-light-rgb) / 0.28);
-  border-radius: 999px;
-  background-color: rgb(var(--bg-deep-rgb) / 0.6);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  backdrop-filter: blur(16px) saturate(1.2);
-  box-shadow:
-    inset 0 1px 0 rgb(var(--white-rgb) / 0.1),
-    0 12px 30px -12px rgb(var(--shadow-rgb) / 0.8);
-}
-
-.site-header.is-scrolled[data-style='pill'] .site-header__contact {
-  padding-inline: 8px;
 }
 
 /* --- Skip link: first stop for keyboard users ------------------------------ */
