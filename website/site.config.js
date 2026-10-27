@@ -3,7 +3,7 @@
 export const SITE = {
   // Public address of the site, no trailing slash. PLACEHOLDER: replace with the
   // real domain before launch (used by canonical, Open Graph, sitemap, robots).
-  url: 'https://frontdoorstudio.example',
+  url: 'https://frontdoorstudio.ma',
   name: 'Frontdoor Studio',
   whatsappNumber: '+212 773235423',
   // Prefilled in the chat when someone taps a WhatsApp button.
