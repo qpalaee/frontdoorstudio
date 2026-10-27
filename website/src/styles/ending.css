@@ -103,21 +103,13 @@
   background: linear-gradient(160deg, var(--photo-top), var(--photo-bottom) 70%);
 }
 
-/* For the real photo later: fills the frame, under the light. */
+/* The photo fills the frame, under the light. */
 .studio__photo img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.studio__placeholder {
-  color: var(--ink-4);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 /* Door light falling on the face; stays on top of the photo. */
