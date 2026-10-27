@@ -34,6 +34,9 @@ const hero = {
 // The current Lenis instance (null with reduced motion), shared with the intro.
 let lenis = null;
 
+// The hero's pin (null with reduced motion, where the laptop is a normal block).
+let pinTrigger = null;
+
 /* --------------------------------------------------------------------------
    Smooth scrolling (Lenis), driven by GSAP's clock so both update
    in the same frame and the pin never jitters.
@@ -99,7 +102,37 @@ function buildPinnedReveal({ distance = '+=200%', rise = 0.5 } = {}) {
 
   // 85–100%: the caption appears.
   tl.fromTo(hero.caption, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15 }, 0.85);
+
+  pinTrigger = tl.scrollTrigger;
+  return () => {
+    pinTrigger = null;
+  };
 }
+
+/* --------------------------------------------------------------------------
+   "Work" links. #work is inside the pinned scene, so a normal jump lands at
+   the top of the pin, where the laptop is still hidden. With the pin, these
+   links go to its end instead: laptop and caption fully shown.
+   Capture phase, so it runs before Lenis' own anchor handling.
+   -------------------------------------------------------------------------- */
+function scrollToWork({ immediate = false } = {}) {
+  if (!pinTrigger) return false;
+  const y = pinTrigger.end;
+  if (lenis) lenis.scrollTo(y, { immediate, force: true });
+  else window.scrollTo({ top: y, behavior: immediate ? 'instant' : 'smooth' });
+  return true;
+}
+
+document.addEventListener(
+  'click',
+  (event) => {
+    const link = event.target.closest?.('a[href="#work"]');
+    if (!link || !scrollToWork()) return; // no pin: the normal anchor jump is right
+    event.preventDefault();
+    event.stopPropagation();
+  },
+  true,
+);
 
 /* --------------------------------------------------------------------------
    OLD phone version (no pin: the laptop sat under the hero and rose as it
@@ -144,7 +177,11 @@ initServicesProcess();
 initEnding();
 
 // Web fonts change text height, which moves the trigger positions: measure again.
-document.fonts.ready.then(() => ScrollTrigger.refresh());
+// Then, if the page was opened on /#work, go to the shown laptop (see above).
+document.fonts.ready.then(() => {
+  ScrollTrigger.refresh();
+  if (location.hash === '#work') scrollToWork({ immediate: true });
+});
 
 // Intro before the hero (once per session). Runs after Lenis exists so it can lock the scroll.
 initIntro({ getLenis: () => lenis });
