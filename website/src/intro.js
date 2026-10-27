@@ -43,7 +43,7 @@ export function initIntro({ getLenis }) {
   const img = picture.querySelector('img');
   const canvas = scene.querySelector('[data-hero-dust]');
   const skip = scene.querySelector('[data-intro-skip]');
-  const header = scene.querySelector('.site-header');
+  const header = document.querySelector('[data-site-header]'); // fixed, outside the scene
   const titleLines = scene.querySelectorAll('[data-hero-reveal]'); // "We", "doors for brands.", subtitle
   const button = scene.querySelector('.hero__cta');
   const slits = {

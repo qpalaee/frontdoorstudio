@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Scene: header + hero. Two layouts share the same HTML:
+   Scene: the hero (the header is in header.css). Two layouts share the same HTML:
 
    1. "Stacked" (default): the hero text fills the first screen and the laptop
       sits under it as a normal block. Used with reduced motion, and if
@@ -16,6 +16,7 @@
 
 
   position: relative;
+  padding-top: var(--header-h); /* room for the fixed header (header.css) */
   overflow: hidden; /* the laptop base overhang must never cause sideways scroll */
   isolation: isolate; /* keeps the z-index values below local to the scene */
   background: var(--bg);
@@ -87,49 +88,6 @@
   height: 100svh;
   pointer-events: none;
   mix-blend-mode: screen;
-}
-
-/* --- Header -------------------------------------------------------------- */
-
-.site-header {
-  padding-inline: var(--gutter);
-}
-
-.site-header__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: var(--page-max);
-  margin-inline: auto;
-  padding-block: 24px;
-}
-
-/* Every link in the header is at least 44px tall, so it is easy to tap. */
-.site-header__logo,
-.site-nav__link,
-.site-header__contact {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
-
-.site-header__logo img {
-  width: auto;
-  height: 40px;
-}
-
-.site-nav__list {
-  display: flex;
-  gap: 36px;
-}
-
-.site-nav__link {
-  color: var(--ink-2);
-  font-size: 15px;
-}
-
-.site-header__contact {
-  font-size: 15px;
 }
 
 /* --- Hero text ----------------------------------------------------------- */
@@ -245,11 +203,6 @@
 /* --- Phones -------------------------------------------------------------- */
 
 @media (max-width: 860px) {
-  .site-nav {
-    display: none;
-  }
-
-
   /* The three labels don't fit on one line: name on top, details under it. */
   .work-caption__name {
     flex-basis: 100%;

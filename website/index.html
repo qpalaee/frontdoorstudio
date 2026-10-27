@@ -99,8 +99,57 @@
   </head>
 
   <body>
-    <!-- The scene is the part that gets pinned on desktop. The header lives inside it
-         so it stays on screen while the light opens. -->
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- Fixed on top of the page (src/header.js). Transparent over the hero, so the
+         intro and the pinned reveal look the same; after the hero it gets a
+         background, hides when scrolling down and comes back when scrolling up. -->
+    <header class="site-header" data-site-header>
+      <div class="site-header__inner">
+        <a class="site-header__logo" href="#top" aria-label="Frontdoor Studio home">
+          <img src="/assets/logo-horizontal-dark.svg" alt="" width="192" height="40" />
+        </a>
+        <nav class="site-nav" aria-label="Main">
+          <ul class="site-nav__list">
+            <li><a class="site-nav__link" href="#work">Work</a></li>
+            <li><a class="site-nav__link" href="#services">Services</a></li>
+            <li><a class="site-nav__link" href="#process">Process</a></li>
+            <li><a class="site-nav__link" href="#studio">Studio</a></li>
+          </ul>
+        </nav>
+        <a class="site-header__contact" href="#contact">Contact</a>
+        <!-- Phones: opens the menu below. Hidden without JS (it needs it). -->
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-menu-open>
+          <span class="menu-toggle__bars" aria-hidden="true"></span>
+          <span class="sr-only">Menu</span>
+        </button>
+      </div>
+
+      <!-- Phone menu. A modal <dialog>: focus stays inside, Escape closes it. -->
+      <dialog class="site-menu" id="site-menu" aria-label="Menu" data-menu>
+        <div class="site-menu__top">
+          <a class="site-header__logo" href="#top" aria-label="Frontdoor Studio home" data-menu-link>
+            <img src="/assets/logo-horizontal-dark.svg" alt="" width="192" height="40" />
+          </a>
+          <button class="menu-toggle menu-toggle--close" type="button" data-menu-close>
+            <span class="menu-toggle__bars" aria-hidden="true"></span>
+            <span class="sr-only">Close menu</span>
+          </button>
+        </div>
+        <nav aria-label="Menu">
+          <ul class="site-menu__list">
+            <li><a class="site-menu__link" href="#work" data-menu-link>Work</a></li>
+            <li><a class="site-menu__link" href="#services" data-menu-link>Services</a></li>
+            <li><a class="site-menu__link" href="#process" data-menu-link>Process</a></li>
+            <li><a class="site-menu__link" href="#studio" data-menu-link>Studio</a></li>
+            <li><a class="site-menu__link" href="#contact" data-menu-link>Contact</a></li>
+          </ul>
+        </nav>
+        <a class="site-menu__whatsapp" href="{{link.whatsapp}}" target="_blank" rel="noopener">Message us on WhatsApp</a>
+      </dialog>
+    </header>
+
+    <!-- The scene is the part that gets pinned. -->
     <div class="scene" id="top" data-scene>
       <!-- Hero media: the door photo + the drawn slit of light on top of it, in the
            photo's own pixel coordinates (so it lands exactly on the photo's slit).
@@ -167,23 +216,6 @@
       <!-- Dust floating in the light of the door (drawn by src/dust.js). -->
       <canvas class="scene__dust" aria-hidden="true" data-hero-dust></canvas>
 
-      <header class="site-header" role="banner">
-        <div class="site-header__inner">
-          <a class="site-header__logo" href="#top" aria-label="Frontdoor Studio home">
-            <img src="/assets/logo-horizontal-dark.svg" alt="" width="192" height="40" />
-          </a>
-          <nav class="site-nav" aria-label="Main">
-            <ul class="site-nav__list">
-              <li><a class="site-nav__link" href="#work">Work</a></li>
-              <li><a class="site-nav__link" href="#services">Services</a></li>
-              <li><a class="site-nav__link" href="#process">Process</a></li>
-              <li><a class="site-nav__link" href="#studio">Studio</a></li>
-            </ul>
-          </nav>
-          <a class="site-header__contact" href="#contact">Contact</a>
-        </div>
-      </header>
-
       <section class="hero" aria-labelledby="hero-title">
         <!-- First screen: the heading sits in the sky, the button on the sand.
              They fade out together, so they share one wrapper. -->
@@ -248,7 +280,7 @@
       </section>
     </div>
 
-    <main id="main">
+    <main id="main" tabindex="-1">
       <!-- Services and Process share one background and one light that travels
            from under the cards to the start of the process line. -->
       <div class="light-scene">

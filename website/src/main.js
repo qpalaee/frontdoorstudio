@@ -5,6 +5,7 @@ import { initIntro } from './intro.js';
 import { initServicesProcess } from './services-process.js';
 import { initEnding } from './ending.js';
 import { initContactFit } from './contact-fit.js';
+import { initHeader } from './header.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,7 +82,7 @@ function buildPinnedReveal({ distance = '+=200%', rise = 0.5 } = {}) {
     },
   });
 
-  // 0–30%: the text moves up and fades out. The header stays.
+  // 0–30%: the text moves up and fades out. The header (fixed, header.js) stays.
   tl.to(hero.intro, { y: -60, autoAlpha: 0, duration: 0.3 }, 0);
 
   // Same time: the photo fades to black, so only the laptop remains.
@@ -108,7 +109,8 @@ function buildPinnedReveal({ distance = '+=200%', rise = 0.5 } = {}) {
    "Work" links. #work is inside the pinned scene, so a normal jump lands at
    the top of the pin, where the laptop is still hidden. With the pin, these
    links go to its end instead: laptop and caption fully shown.
-   Capture phase, so it runs before Lenis' own anchor handling.
+   The click keeps going (the phone menu closes on it, Lenis starts its own
+   anchor scroll); right after, the scroll is redirected to the end of the pin.
    -------------------------------------------------------------------------- */
 function scrollToWork({ immediate = false } = {}) {
   if (!pinTrigger) return false;
@@ -122,9 +124,9 @@ document.addEventListener(
   'click',
   (event) => {
     const link = event.target.closest?.('a[href="#work"]');
-    if (!link || !scrollToWork()) return; // no pin: the normal anchor jump is right
-    event.preventDefault();
-    event.stopPropagation();
+    if (!link || !pinTrigger) return; // no pin: the normal anchor jump is right
+    event.preventDefault(); // no native jump to the top of the pin
+    setTimeout(scrollToWork); // after every click handler, Lenis' included
   },
   true,
 );
@@ -158,6 +160,9 @@ document.fonts.ready.then(() => {
   ScrollTrigger.refresh();
   if (location.hash === '#work') scrollToWork({ immediate: true });
 });
+
+// Fixed header + phone menu. At rest (transparent) until the end of the hero's pin.
+initHeader({ getLenis: () => lenis, getRestEnd: () => (pinTrigger ? pinTrigger.end : 0) });
 
 // Intro before the hero (once per session). Runs after Lenis exists so it can lock the scroll.
 initIntro({ getLenis: () => lenis });

@@ -1,0 +1,313 @@
+/* ==========================================================================
+   Header: fixed on top of the whole page (src/header.js sets the states).
+
+   - At rest (over the hero, and during the pinned reveal): transparent, same
+     place and size as before, so the intro and the hero look the same.
+   - .is-scrolled (after the hero): a background, more compact.
+   - .is-hidden: slid up while scrolling down, back when scrolling up.
+
+   The look of .is-scrolled is chosen with data-style on the <header>:
+   "bar" (full-width frosted bar) or "pill" (floating glass pill).
+   ========================================================================== */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  padding-inline: var(--gutter);
+  transition:
+    transform 350ms var(--ease-out),
+    background-color 350ms var(--ease-out),
+    border-color 350ms var(--ease-out);
+}
+
+.site-header.is-hidden {
+  transform: translateY(-110%);
+}
+
+/* Keyboard users always see the header while they are in it. */
+.site-header:focus-within {
+  transform: none;
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-block: 24px;
+  transition:
+    padding 350ms var(--ease-out),
+    background-color 350ms var(--ease-out),
+    border-color 350ms var(--ease-out),
+    box-shadow 350ms var(--ease-out);
+}
+
+/* Every link in the header is at least 44px tall, so it is easy to tap. */
+.site-header__logo,
+.site-nav__link,
+.site-header__contact {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.site-header__logo img {
+  width: auto;
+  height: 40px;
+  transition: height 350ms var(--ease-out);
+}
+
+.site-nav__list {
+  display: flex;
+  gap: 36px;
+}
+
+.site-nav__link {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.site-header__contact {
+  font-size: 15px;
+}
+
+/* --- Scrolled: "bar" (default) ------------------------------------------- */
+
+.site-header.is-scrolled[data-style='bar'] {
+  border-bottom: 1px solid rgb(var(--gold-light-rgb) / 0.14);
+  background-color: rgb(var(--bg-rgb) / 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+}
+
+.site-header.is-scrolled[data-style='bar'] .site-header__inner {
+  padding-block: 10px;
+}
+
+.site-header.is-scrolled .site-header__logo img {
+  height: 32px;
+}
+
+/* --- Scrolled: "pill" ------------------------------------------------------ */
+
+.site-header.is-scrolled[data-style='pill'] {
+  padding-top: 12px;
+}
+
+.site-header.is-scrolled[data-style='pill'] .site-header__inner {
+  max-width: calc(var(--page-max) + 40px);
+  padding: 6px 12px 6px 20px;
+  border: 1px solid rgb(var(--gold-light-rgb) / 0.28);
+  border-radius: 999px;
+  background-color: rgb(var(--bg-deep-rgb) / 0.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--white-rgb) / 0.1),
+    0 12px 30px -12px rgb(var(--shadow-rgb) / 0.8);
+}
+
+.site-header.is-scrolled[data-style='pill'] .site-header__contact {
+  padding-inline: 8px;
+}
+
+/* --- Skip link: first stop for keyboard users ------------------------------ */
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--gold-white);
+  color: var(--on-gold);
+  font-size: 15px;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* --- Menu button (phones) -------------------------------------------------- */
+
+.menu-toggle {
+  display: none; /* phones only, and only with JS */
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: -12px; /* the icon lines up with the gutter, the tap area is still 44px */
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* Two lines; the close button turns them into a cross. */
+.menu-toggle__bars {
+  position: relative;
+  width: 20px;
+  height: 8px;
+}
+
+.menu-toggle__bars::before,
+.menu-toggle__bars::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--gold-light);
+}
+
+.menu-toggle__bars::before {
+  top: 0;
+}
+
+.menu-toggle__bars::after {
+  bottom: 0;
+}
+
+.menu-toggle--close .menu-toggle__bars::before {
+  top: 3.25px;
+  rotate: 45deg;
+}
+
+.menu-toggle--close .menu-toggle__bars::after {
+  bottom: 3.25px;
+  rotate: -45deg;
+}
+
+/* --- Menu (phones): a modal <dialog> over the page -------------------------- */
+
+.site-menu {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0 var(--gutter) 40px;
+  border: 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 100%, rgb(var(--amber-rgb) / 0.18), transparent 70%),
+    var(--bg);
+  color: var(--ink);
+  overscroll-behavior: contain;
+}
+
+.site-menu[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.site-menu::backdrop {
+  background: var(--bg);
+}
+
+.site-menu__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 24px;
+}
+
+.site-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6vh;
+}
+
+.site-menu__link {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(28px, 8vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.site-menu__link:hover {
+  color: var(--gold-white);
+}
+
+.site-menu__whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  margin-top: auto;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--gold-white), var(--gold-light));
+  color: var(--on-gold);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.site-menu__whatsapp:hover {
+  color: var(--on-gold);
+}
+
+/* Entrance: a short fade and rise (no motion with reduced motion). */
+@media (prefers-reduced-motion: no-preference) {
+  .site-menu[open] {
+    animation: site-menu-in 320ms var(--ease-out);
+  }
+
+  .site-menu[open] .site-menu__link {
+    animation: site-menu-in 420ms var(--ease-out) backwards;
+  }
+
+  .site-menu__list li:nth-child(2) .site-menu__link { animation-delay: 40ms; }
+  .site-menu__list li:nth-child(3) .site-menu__link { animation-delay: 80ms; }
+  .site-menu__list li:nth-child(4) .site-menu__link { animation-delay: 120ms; }
+  .site-menu__list li:nth-child(5) .site-menu__link { animation-delay: 160ms; }
+}
+
+@keyframes site-menu-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+/* While the menu is open the page under it doesn't scroll (Lenis is stopped too). */
+.menu-open,
+.menu-open body {
+  overflow: hidden;
+}
+
+/* --- Phones ------------------------------------------------------------------ */
+
+@media (max-width: 860px) {
+  .site-nav {
+    display: none;
+  }
+
+  .js .menu-toggle {
+    display: inline-flex;
+  }
+
+  /* Logo on the left; Contact and the menu button together on the right. */
+  .site-header__inner {
+    gap: 12px;
+  }
+
+  .site-header__contact {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
+  .site-header.is-scrolled .site-header__logo img {
+    height: 30px;
+  }
+}
