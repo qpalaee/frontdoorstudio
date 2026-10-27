@@ -9,9 +9,9 @@ gsap.registerPlugin(ScrollTrigger);
    One soft light travels from under the Services cards to the start of the
    Process line, then runs along it and lights each step.
    -------------------------------------------------------------------------- */
-// Opacity of a process step before the light reaches it. 0.65 is the lowest that
-// keeps its text readable (4.5:1 for --ink-muted on the page black).
-const UNLIT = 0.65;
+// Opacity of a process step before the light reaches it. 0.7 is about the lowest that
+// keeps its text readable (4.5:1 for --ink-muted on the page black, checked by Lighthouse).
+const UNLIT = 0.7;
 
 export function initServicesProcess() {
   const scene = document.querySelector('.light-scene');
