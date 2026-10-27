@@ -29,7 +29,6 @@
   --amber-rgb: 240 168 80; /* the orange light of the desert image, used in glows */
   --glow-rgb: 255 214 150; /* warm halo around lit lines and dots */
   --glass-rgb: 255 236 205; /* tint of the frosted glass */
-  --sunlight-rgb: 255 226 180; /* light falling on the studio photos */
   --bronze-rgb: 178 112 44;
   --ember-rgb: 120 70 24;
   --light-core: #fff1d9; /* the hottest point of a light */

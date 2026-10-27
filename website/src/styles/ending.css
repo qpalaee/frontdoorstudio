@@ -158,28 +158,6 @@
   object-fit: contain;
 }
 
-/* Door light falling on the face; stays on top of the photo, inside the card. */
-.studio__light {
-  position: absolute;
-  inset-block: 0;
-  width: 38%;
-  pointer-events: none;
-}
-
-/* Rounded like the card's corner it sits in (the card no longer clips with
-   overflow: hidden, so the head can rise above it). */
-.studio__photo--alae .studio__light {
-  right: 0;
-  border-top-right-radius: 17px;
-  background: linear-gradient(270deg, rgb(var(--sunlight-rgb) / 0.22), transparent);
-}
-
-.studio__photo--laila .studio__light {
-  left: 0;
-  border-top-left-radius: 17px;
-  background: linear-gradient(90deg, rgb(var(--sunlight-rgb) / 0.22), transparent);
-}
-
 .studio__caption {
   display: flex;
   flex-direction: column;
