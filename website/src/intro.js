@@ -55,6 +55,9 @@ export function initIntro({ getLenis }) {
   const dust = createDust(canvas, () => slit, scene);
   let introStarted = false;
   let tl = null;
+  // Set while the intro runs: jumps to the final state, even before the photo
+  // has decoded and the timeline exists.
+  let finishNow = null;
 
   // The big OPEN, drawn on the photo. Created once the photo is decoded; it reads
   // the file the <picture> actually loaded (and again after a rotation), so the
@@ -67,8 +70,14 @@ export function initIntro({ getLenis }) {
   });
 
   skip.addEventListener('click', () => {
-    tl?.progress(1);
-    heroTitle?.setFinal();
+    // Keyboard users keep their place: focus moves to the next control.
+    if (document.activeElement === skip) button.focus({ preventScroll: true });
+    if (tl) {
+      tl.progress(1); // runs done() through onComplete
+      heroTitle?.setFinal();
+    } else {
+      finishNow?.();
+    }
   });
 
   function showFinal() {
@@ -121,14 +130,26 @@ export function initIntro({ getLenis }) {
       let cancelled = false;
 
       function done() {
+        finishNow = null;
         markSeen();
         root.classList.remove('intro-running');
         gsap.set([header, ...titleLines, button, picture, skip], { clearProps: 'all' });
         gsap.set(media, { clearProps: 'transform' });
         gsap.set(slit, { clearProps: 'all' }); // back to the CSS default: hidden
-        gsap.set(media.querySelector('.hero-title-svg'), { clearProps: 'opacity,visibility' });
+        const titleSvg = media.querySelector('.hero-title-svg');
+        if (titleSvg) gsap.set(titleSvg, { clearProps: 'opacity,visibility' });
         getLenis()?.start();
       }
+
+      // Skip pressed while the photo is still loading: no timeline yet. Show the
+      // final state now; the title is drawn in its final look once it exists.
+      finishNow = () => {
+        cancelled = true;
+        dust.state.level = 1;
+        dust.start();
+        done();
+        heroTitleReady.then((title) => title.setFinal());
+      };
 
       heroTitleReady.then((heroTitle) => {
         if (cancelled) return;
@@ -190,6 +211,7 @@ export function initIntro({ getLenis }) {
       return () => {
         cancelled = true;
         tl = null;
+        finishNow = null;
         root.classList.remove('intro-running');
         getLenis()?.start();
       };
