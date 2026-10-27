@@ -16,9 +16,9 @@
   inset: 0;
   margin: 0;
   pointer-events: none;
-  font-family: 'Jost', 'Futura', 'Avenir Next', system-ui, sans-serif;
+  font-family: var(--font-body);
   font-weight: 300;
-  color: #FFE7C2;
+  color: var(--gold-white);
   text-align: center;
 }
 
@@ -43,15 +43,15 @@
   top: calc(64% + clamp(2rem, 3.6vw, 4.25rem));
   margin: 0;
   padding-inline: 16px;
-  font-family: 'Jost', 'Futura', 'Avenir Next', system-ui, sans-serif;
+  font-family: var(--font-body);
   font-weight: 300;
   font-size: clamp(0.875rem, 1.3vw, 1.25rem);
   letter-spacing: 0.02em;
-  color: #D9CFC2;
+  color: var(--ink-2);
   opacity: 0.85;
   text-align: center;
   /* keeps the line readable where it crosses the bright wedge on the sand */
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 22px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 0 10px rgb(var(--shadow-rgb) / 0.9), 0 0 22px rgb(var(--shadow-rgb) / 0.7);
 }
 
 /* Same query as the portrait <source> in index.html. */

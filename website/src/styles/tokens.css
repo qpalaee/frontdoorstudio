@@ -1,16 +1,61 @@
 /* Design tokens: every color, font and shared size lives here,
-   so the rest of the CSS never repeats a raw value. */
+   so the rest of the CSS never repeats a raw value.
+   `*-rgb` tokens are bare channels, for colors used at several opacities:
+   rgb(var(--gold-light-rgb) / 0.4). */
 :root {
-  /* Colors */
+  /* Backgrounds */
   --bg: #050403; /* matches the black of the hero image, so its edges disappear */
+  --bg-rgb: 5 4 3;
+  --bg-deep: #070504; /* sections after the hero */
+  --bg-deep-rgb: 7 5 4;
+  --surface: #0e0a06; /* small solid pills (the "Best value" badge) */
+  --shadow-rgb: 0 0 0;
+  --white-rgb: 255 255 255;
+
+  /* Text */
   --ink: #f4eee4;
   --ink-2: #d9cfc2;
+  --ink-muted: #b8aea2; /* body copy in the sections */
   --ink-3: #9c9286;
+  --ink-3-rgb: 156 146 134;
+  --ink-4: #8f857a; /* photo placeholders */
+  --on-gold: #1a1006; /* text on solid gold buttons */
+
+  /* Gold and light */
   --gold: #d4a867;
   --gold-soft: #e8c48a;
   --gold-light: #f2c07a; /* accent: links, Contact (warmer, matches the desert light) */
+  --gold-light-rgb: 242 192 122;
   --gold-white: #ffe7c2; /* link hover, button text */
+  --gold-white-rgb: 255 231 194;
   --amber-rgb: 240 168 80; /* the orange light of the desert image, used in glows */
+  --glow-rgb: 255 214 150; /* warm halo around lit lines and dots */
+  --glass-rgb: 255 236 205; /* tint of the frosted glass */
+  --sunlight-rgb: 255 226 180; /* light falling on the studio photos */
+  --bronze-rgb: 178 112 44;
+  --ember-rgb: 120 70 24;
+  --light-core: #fff1d9; /* the hottest point of a light */
+  --light-hot: #fff8ec;
+
+  /* Gradients */
+  --grad-heading: linear-gradient(180deg, #fff 0%, #fff6e8 60%, #f2c995 100%);
+  --word-top: #fff6e6; /* the giant SERVICES word */
+  --word-mid: #f9d9a6;
+  --footer-dim: #3a3029; /* FRONT / DOOR, away from the light */
+  --footer-mid: #9c8a70;
+
+  /* Objects */
+  --photo-top: #1a1510; /* empty studio photo frame */
+  --photo-bottom: #0d0a07;
+  --dot-bg: #0b0806; /* unlit process dot */
+  --laptop-lid-top: #24221f;
+  --laptop-lid-bottom: #141210;
+  --laptop-base-1: #3a3631;
+  --laptop-base-2: #24211e;
+  --laptop-base-3: #121110;
+  --laptop-notch: #0e0d0c;
+  --laptop-glow-rgb: 232 184 119;
+  --metal-edge-rgb: 246 219 174;
 
   /* Fonts */
   --font-display: 'Unbounded', 'Arial', sans-serif;

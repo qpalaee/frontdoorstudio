@@ -6,7 +6,7 @@
 .light-scene {
   position: relative;
   overflow: hidden; /* the light is wider than small screens */
-  background-color: #070504;
+  background-color: var(--bg-deep);
 }
 
 /* Only transform and opacity are animated: never filter/blur (slow on phones). */
@@ -21,10 +21,10 @@
   border-radius: 50%;
   background: radial-gradient(
     closest-side,
-    rgb(255 214 150 / 0.3),
-    rgb(240 168 80 / 0.16) 45%,
-    rgb(120 70 24 / 0.08) 70%,
-    rgb(7 5 4 / 0)
+    rgb(var(--glow-rgb) / 0.3),
+    rgb(var(--amber-rgb) / 0.16) 45%,
+    rgb(var(--ember-rgb) / 0.08) 70%,
+    rgb(var(--bg-deep-rgb) / 0)
   );
   pointer-events: none;
   will-change: transform, opacity;
@@ -72,7 +72,7 @@
   font-weight: 600;
   line-height: 1.04;
   letter-spacing: -0.035em;
-  background: linear-gradient(180deg, #fff 0%, #fff6e8 60%, #f2c995 100%);
+  background: var(--grad-heading);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -80,7 +80,7 @@
 
 .process__lead {
   max-width: 34ch;
-  color: #b8aea2;
+  color: var(--ink-muted);
   font-size: 18px;
   line-height: 1.6;
 }
@@ -98,7 +98,7 @@
   left: 0;
   height: 2px;
   border-radius: 2px;
-  background: rgb(242 192 122 / 0.14);
+  background: rgb(var(--gold-light-rgb) / 0.14);
 }
 
 /* The lit part of the line: grows from the left with scaleX. */
@@ -110,10 +110,10 @@
   height: 4px;
   border-radius: 4px;
   transform-origin: 0 50%;
-  background: linear-gradient(90deg, rgb(242 192 122 / 0.25) 0%, #f2c07a 30%, #fff1d9 100%);
+  background: linear-gradient(90deg, rgb(var(--gold-light-rgb) / 0.25) 0%, var(--gold-light) 30%, var(--light-core) 100%);
   box-shadow:
-    0 0 14px rgb(255 214 150 / 0.8),
-    0 0 50px rgb(240 168 80 / 0.45);
+    0 0 14px rgb(var(--glow-rgb) / 0.8),
+    0 0 50px rgb(var(--amber-rgb) / 0.45);
 }
 
 .process__steps {
@@ -140,20 +140,20 @@
   left: 0;
   width: 16px;
   height: 16px;
-  border: 1px solid rgb(242 192 122 / 0.35);
+  border: 1px solid rgb(var(--gold-light-rgb) / 0.35);
   border-radius: 50%;
-  background: #0b0806;
+  background: var(--dot-bg);
 }
 
 .process__dot i {
   position: absolute;
   inset: -1px;
   border-radius: 50%;
-  background: #fff1d9;
+  background: var(--light-core);
   box-shadow:
-    0 0 0 4px rgb(242 192 122 / 0.18),
-    0 0 18px rgb(255 214 150 / 0.9),
-    0 0 50px rgb(240 168 80 / 0.5);
+    0 0 0 4px rgb(var(--gold-light-rgb) / 0.18),
+    0 0 18px rgb(var(--glow-rgb) / 0.9),
+    0 0 50px rgb(var(--amber-rgb) / 0.5);
 }
 
 .process__num {
@@ -174,7 +174,7 @@
 
 .process__text {
   max-width: 24ch;
-  color: #b8aea2;
+  color: var(--ink-muted);
   font-size: 16px;
   line-height: 1.6;
 }
@@ -186,7 +186,7 @@
   align-self: flex-end;
   min-height: 44px;
   padding-bottom: 4px;
-  border-bottom: 1px solid rgb(242 192 122 / 0.4);
+  border-bottom: 1px solid rgb(var(--gold-light-rgb) / 0.4);
   color: var(--gold-light);
   font-size: 16px;
 }
@@ -214,7 +214,7 @@
     width: 4px;
     height: calc(100% - 14px);
     transform-origin: 50% 0;
-    background: linear-gradient(180deg, rgb(242 192 122 / 0.25) 0%, #f2c07a 30%, #fff1d9 100%);
+    background: linear-gradient(180deg, rgb(var(--gold-light-rgb) / 0.25) 0%, var(--gold-light) 30%, var(--light-core) 100%);
   }
 
   .process__steps {

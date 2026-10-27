@@ -164,13 +164,13 @@
 
 .laptop__lid {
   padding: 14px 14px 20px;
-  border: 1px solid rgb(246 219 174 / 0.2);
+  border: 1px solid rgb(var(--metal-edge-rgb) / 0.2);
   border-bottom: 0;
   border-radius: 22px 22px 0 0;
-  background: linear-gradient(180deg, #24221f, #141210);
+  background: linear-gradient(180deg, var(--laptop-lid-top), var(--laptop-lid-bottom));
   box-shadow:
-    0 0 0 1px rgb(0 0 0 / 0.6),
-    0 -20px 120px rgb(232 184 119 / 0.2);
+    0 0 0 1px rgb(var(--shadow-rgb) / 0.6),
+    0 -20px 120px rgb(var(--laptop-glow-rgb) / 0.2);
 }
 
 .laptop__screen {
@@ -184,10 +184,10 @@
   height: 16px;
   margin-inline: calc(-1 * var(--laptop-overhang));
   border-radius: 0 0 16px 16px;
-  background: linear-gradient(180deg, #3a3631 0%, #24211e 60%, #121110 100%);
+  background: linear-gradient(180deg, var(--laptop-base-1) 0%, var(--laptop-base-2) 60%, var(--laptop-base-3) 100%);
   box-shadow:
-    0 30px 60px -10px rgb(0 0 0 / 0.9),
-    inset 0 -1px 0 rgb(246 219 174 / 0.25);
+    0 30px 60px -10px rgb(var(--shadow-rgb) / 0.9),
+    inset 0 -1px 0 rgb(var(--metal-edge-rgb) / 0.25);
 }
 
 /* The small notch you use to open a real laptop. */
@@ -200,7 +200,7 @@
   height: 6px;
   margin-left: -65px;
   border-radius: 0 0 8px 8px;
-  background: #0e0d0c;
+  background: var(--laptop-notch);
 }
 
 .work-caption {

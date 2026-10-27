@@ -19,7 +19,7 @@
   align-items: center;
   min-height: 44px;
   padding: 0 16px;
-  border: 1px solid rgb(242 192 122 / 0.35);
+  border: 1px solid rgb(var(--gold-light-rgb) / 0.35);
   border-radius: 999px;
   background: none;
   color: var(--ink-2);
@@ -33,7 +33,7 @@
 }
 
 .intro-skip:hover {
-  border-color: rgb(242 192 122 / 0.7);
+  border-color: rgb(var(--gold-light-rgb) / 0.7);
   color: var(--gold-white);
 }
 
