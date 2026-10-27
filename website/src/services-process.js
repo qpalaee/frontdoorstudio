@@ -5,9 +5,14 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* --------------------------------------------------------------------------
    Services + Process: everything follows the scroll (scrub), no pin.
+   Reveals use opacity, not autoAlpha, so the buttons stay reachable with Tab.
    One soft light travels from under the Services cards to the start of the
    Process line, then runs along it and lights each step.
    -------------------------------------------------------------------------- */
+// Opacity of a process step before the light reaches it. 0.65 is the lowest that
+// keeps its text readable (4.5:1 for --ink-muted on the page black).
+const UNLIT = 0.65;
+
 export function initServicesProcess() {
   const scene = document.querySelector('.light-scene');
   if (!scene) return;
@@ -45,10 +50,10 @@ export function initServicesProcess() {
     // hidden states get lost, so Services would show before the reveal.
     const servicesTl = gsap
       .timeline({ paused: true, defaults: { ease: 'power2.out' } })
-      .from('.services__eyebrow', { autoAlpha: 0, y: 16, duration: 0.3 })
-      .from('.services__word', { autoAlpha: 0, y: 80, scale: 0.94, duration: 1 }, 0.05)
-      .from('.services__card', { autoAlpha: 0, y: 120, duration: 0.8, stagger: 0.18 }, 0.45)
-      .from('.services__footer', { autoAlpha: 0, y: 20, duration: 0.4 }, 1.2);
+      .from('.services__eyebrow', { opacity: 0, y: 16, duration: 0.3 })
+      .from('.services__word', { opacity: 0, y: 80, scale: 0.94, duration: 1 }, 0.05)
+      .from('.services__card', { opacity: 0, y: 120, duration: 0.8, stagger: 0.18 }, 0.45)
+      .from('.services__footer', { opacity: 0, y: 20, duration: 0.4 }, 1.2);
     ScrollTrigger.create({ trigger: services, start: 'top 85%', end: 'top 10%', scrub: 0.6, animation: servicesTl });
 
     // The light travels from under the cards to the start of the line
@@ -80,7 +85,7 @@ export function initServicesProcess() {
     if (wide) {
       // The light runs along the line and lights each step
       gsap.set('.process__lit', { scaleX: 0 });
-      gsap.set('.process__step', { opacity: 0.32 });
+      gsap.set('.process__step', { opacity: UNLIT });
       gsap.set('.process__dot i', { opacity: 0 });
       const tl = gsap.timeline({ scrollTrigger: { trigger: line, start: 'top 62%', end: 'top 25%', scrub: 0.6 } });
       tl.to('.process__lit', { scaleX: 1, ease: 'none', duration: 1 }, 0).to(
@@ -101,7 +106,7 @@ export function initServicesProcess() {
       // each step slides up, fades in and lights its dot when the line reaches it.
       const steps = gsap.utils.toArray('.process__step');
       gsap.set('.process__lit', { scaleY: 0 });
-      gsap.set(steps, { opacity: 0.2, y: 24 });
+      gsap.set(steps, { opacity: UNLIT, y: 24 });
       gsap.set('.process__dot i', { opacity: 0 });
       const tl = gsap.timeline({
         scrollTrigger: { trigger: line, start: 'top 70%', end: 'bottom 60%', scrub: 0.6 },

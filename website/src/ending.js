@@ -13,7 +13,9 @@ function scrubbed(trigger, start, end, build) {
 
 /* --------------------------------------------------------------------------
    Studio, Contact, Footer: scrubbed with the scroll, no pin.
-   Only transform and opacity move (smooth on phones).
+   Only transform and opacity move (smooth on phones). Opacity, not autoAlpha:
+   hidden elements stay focusable, so Tab reaches every link and button; the
+   browser scrolls to it and the reveal plays.
    -------------------------------------------------------------------------- */
 export function initEnding() {
   const mm = gsap.matchMedia();
@@ -21,17 +23,17 @@ export function initEnding() {
     // Studio: text first, then the two photos rise at different speeds
     scrubbed('#studio', 'top 80%', 'top 20%', (tl) =>
       tl
-        .from('#studio .studio__text > *', { autoAlpha: 0, y: 30, stagger: 0.1, duration: 0.5 }, 0)
-        .from('#studio figure:nth-child(1)', { autoAlpha: 0, y: 120, duration: 0.8 }, 0.15)
-        .from('#studio figure:nth-child(2)', { autoAlpha: 0, y: 180, duration: 0.8 }, 0.3),
+        .from('#studio .studio__text > *', { opacity: 0, y: 30, stagger: 0.1, duration: 0.5 }, 0)
+        .from('#studio figure:nth-child(1)', { opacity: 0, y: 120, duration: 0.8 }, 0.15)
+        .from('#studio figure:nth-child(2)', { opacity: 0, y: 180, duration: 0.8 }, 0.3),
     );
 
     // Contact: the night lifts and the light appears, then the text and the button
     scrubbed('#contact', 'top 85%', 'top 15%', (tl) =>
       tl
         .fromTo('#contact .contact__shade', { opacity: 0.85 }, { opacity: 0, duration: 1 }, 0)
-        .from('#contact .contact__text > *', { autoAlpha: 0, y: 30, stagger: 0.1, duration: 0.5 }, 0.2)
-        .from('#contact .contact__actions', { autoAlpha: 0, y: 40, duration: 0.5 }, 0.55),
+        .from('#contact .contact__text > *', { opacity: 0, y: 30, stagger: 0.1, duration: 0.5 }, 0.2)
+        .from('#contact .contact__actions', { opacity: 0, y: 40, duration: 0.5 }, 0.55),
     );
 
     // Footer: the door opens one last time, FRONT and DOOR slide apart from the light
