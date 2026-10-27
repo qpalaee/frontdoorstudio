@@ -178,7 +178,8 @@
   --slit-bottom: 65.9%;
 
   position: relative;
-  height: 900px;
+  /* --contact-h is set by src/contact-fit.js only when the content needs more room. */
+  height: var(--contact-h, 900px);
   overflow: hidden;
   background-color: var(--bg-deep);
   background-image: url('/assets/images/contact-door-1920.jpg');
@@ -460,7 +461,7 @@
   }
 
   .contact {
-    height: 780px;
+    height: var(--contact-h, 780px);
     background-image: url('/assets/images/contact-door-1280.jpg');
     background-image: image-set(
       url('/assets/images/contact-door-1280.avif') type('image/avif'),

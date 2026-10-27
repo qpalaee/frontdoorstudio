@@ -4,6 +4,7 @@ import Lenis from 'lenis';
 import { initIntro } from './intro.js';
 import { initServicesProcess } from './services-process.js';
 import { initEnding } from './ending.js';
+import { initContactFit } from './contact-fit.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -147,6 +148,9 @@ initServicesProcess();
 
 // Studio, Contact, Footer (scrubbed).
 initEnding();
+
+// Contact grows if its text needs more room than the fixed height (zoom, long title).
+initContactFit();
 
 // Web fonts change text height, which moves the trigger positions: measure again.
 // Then, if the page was opened on /#work, go to the shown laptop (see above).
