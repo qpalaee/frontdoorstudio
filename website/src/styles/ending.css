@@ -92,27 +92,73 @@
 }
 
 .studio__photo {
+  /* Reusable portrait card: put a transparent cutout <picture> inside and it
+     works, no extra CSS. --breakout: how far the head rises above the card,
+     as a share of the card height (35px on a desktop card, smaller on phones). */
+  --breakout: 0.086;
+  --grid: 22px;
+
   position: relative;
-  display: grid;
-  place-items: center;
   max-width: 100%;
   aspect-ratio: 4 / 5;
-  overflow: hidden;
   border: 1px solid rgb(var(--gold-light-rgb) / 0.18);
   border-radius: 18px;
-  background: linear-gradient(160deg, var(--photo-top), var(--photo-bottom) 70%);
+  /* Base fill + warm glow behind the head and shoulders. */
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 35%, rgb(var(--card-gold-rgb) / 0.18), transparent 70%),
+    var(--card-bg);
+  /* Clips the sides and the bottom to the card (rounded like it), but not the
+     top: the head can rise above the border. */
+  clip-path: inset(-40% 0 0 0 round 0 0 18px 18px);
 }
 
-/* The photo fills the frame, under the light. */
-.studio__photo img {
+/* Blueprint grid: 1px gold lines every 22px with dots where they cross,
+   strongest behind the head and fading out toward the edges (the mask). */
+.studio__photo::before {
+  content: '';
   position: absolute;
   inset: 0;
+  border-radius: inherit;
+  background-image:
+    radial-gradient(circle, rgb(var(--card-gold-rgb)) 1.2px, transparent 1.8px),
+    repeating-linear-gradient(0deg, rgb(var(--card-gold-rgb)) 0 1px, transparent 1px var(--grid)),
+    repeating-linear-gradient(90deg, rgb(var(--card-gold-rgb)) 0 1px, transparent 1px var(--grid));
+  background-size: var(--grid) var(--grid), auto, auto;
+  /* The dots' tile is centered on its own middle: shift it onto the line crossings. */
+  background-position: calc(var(--grid) / -2 + 0.5px) calc(var(--grid) / -2 + 0.5px), 0 0, 0 0;
+  opacity: 0.3;
+  -webkit-mask-image: radial-gradient(ellipse 65% 60% at 50% 35%, #000 20%, transparent 100%);
+  mask-image: radial-gradient(ellipse 65% 60% at 50% 35%, #000 20%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Breakout (default): bottom-aligned, full width, taller than the card by
+   --breakout, so the top of the hair rises above the top border. */
+.studio__photo picture {
+  position: absolute;
+  inset: auto 0 0;
+  height: calc(100% * (1 + var(--breakout)));
+}
+
+.studio__photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 100%;
 }
 
-/* Door light falling on the face; stays on top of the photo. */
+/* Variant: the photo stays inside the card (98% wide, bottom-aligned), so more
+   of the grid shows around the head. */
+.studio__photo--contained picture {
+  inset: 2% 1% 0;
+  height: auto;
+}
+
+.studio__photo--contained img {
+  object-fit: contain;
+}
+
+/* Door light falling on the face; stays on top of the photo, inside the card. */
 .studio__light {
   position: absolute;
   inset-block: 0;
@@ -120,13 +166,17 @@
   pointer-events: none;
 }
 
+/* Rounded like the card's corner it sits in (the card no longer clips with
+   overflow: hidden, so the head can rise above it). */
 .studio__photo--alae .studio__light {
   right: 0;
+  border-top-right-radius: 17px;
   background: linear-gradient(270deg, rgb(var(--sunlight-rgb) / 0.22), transparent);
 }
 
 .studio__photo--laila .studio__light {
   left: 0;
+  border-top-left-radius: 17px;
   background: linear-gradient(90deg, rgb(var(--sunlight-rgb) / 0.22), transparent);
 }
 

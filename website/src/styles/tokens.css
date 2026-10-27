@@ -59,8 +59,8 @@
   --footer-mid: #9c8a70;
 
   /* Objects */
-  --photo-top: #1a1510; /* empty studio photo frame */
-  --photo-bottom: #0d0a07;
+  --card-bg: #120e0a; /* studio cards: a touch lighter than the page */
+  --card-gold-rgb: 201 169 110; /* #c9a96e: glow and blueprint grid of the cards */
   --dot-bg: #0b0806; /* unlit process dot */
   --laptop-lid-top: #24221f;
   --laptop-lid-bottom: #141210;
