@@ -229,21 +229,6 @@
   text-transform: uppercase;
 }
 
-/* 44px tall to tap, with the text and its thin underline at the bottom. */
-.services__more {
-  display: inline-flex;
-  align-items: flex-end;
-  min-height: 44px;
-  padding-bottom: 3px;
-  border-bottom: 1px solid rgb(var(--ink-3-rgb) / 0.35);
-  color: var(--ink-3);
-  font-size: 15px;
-}
-
-.services__more:hover {
-  color: var(--ink-2);
-}
-
 /* --- Phones -------------------------------------------------------------- */
 
 @media (max-width: 860px) {
