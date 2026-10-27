@@ -29,12 +29,9 @@
       } catch (e) {}
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Jost:wght@300;400&family=Unbounded:wght@500;600&display=swap"
-    />
+    <!-- Fonts are self-hosted (src/styles/fonts.css). Jost is the only one on the
+         first screen, so it starts downloading right away. -->
+    <link rel="preload" href="/fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- The hero photo is the first thing people see: start downloading it right away.
          Same files and media as the <picture> below, so it is not fetched twice. -->
