@@ -46,6 +46,34 @@
   object-position: 50% 50%; /* the slit overlay assumes a centered photo */
 }
 
+/* Hides the AI swirls of the sand. Decorative layers between the photo and the
+   drawn slit / OPEN, so OPEN and its door copy look exactly as before. */
+.scene__vignette,
+.scene__fade,
+.scene__grain {
+  position: absolute;
+  pointer-events: none;
+}
+
+.scene__vignette {
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 55%, transparent 55%, rgb(var(--hero-night-rgb) / 0.75) 100%);
+}
+
+/* The last 32% of the hero. */
+.scene__fade {
+  inset: 68% 0 0;
+  background: linear-gradient(to bottom, rgb(var(--hero-night-rgb) / 0), rgb(var(--hero-night-rgb) / 0.88));
+}
+
+.scene__grain {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+}
+
 /* The drawn slit, in the photo's pixel coordinates. `slice` + xMidYMid crops
    exactly like object-fit: cover + 50% 50%, so it lands on the photo's slit.
    No transform-origin here: GSAP sets the SVG origin itself. */
@@ -92,13 +120,14 @@
 
 /* --- Hero text ----------------------------------------------------------- */
 
-/* Shared by the title lines (hero-title.css) and the button, so the button can
+/* Shared by the title (hero-title.css) and the buttons, so the buttons can
    always sit under the subtitle. Lengths in svh: the title box is 100svh tall. */
 .hero {
-  --hero-line-size: clamp(1.25rem, 2.7vw, 3.25rem);
-  --hero-sub-size: clamp(0.875rem, 1.3vw, 1.25rem);
+  --hero-line-size: clamp(1.5rem, 2.78vw, 2.5rem); /* 40px on desktop, 24px minimum */
+  --hero-sub-size: clamp(0.875rem, 1.25vw, 1.125rem); /* 18px on desktop, 14px minimum */
   --hero-sub-gap: clamp(2rem, 3.6vw, 4.25rem);
-  /* "doors for brands." sits just under the horizon of the photo. The horizon
+  --hero-sub-lines: 1;
+  /* The line sits just under the horizon of the photo. The horizon
      is at 61% of the height, or lower on screens wider than the photo (16:9),
      where the photo is cropped top and bottom: 50svh + 6.25vw (+2.9svh gap). */
   --hero-line2-top: max(64svh, 52.9svh + 6.25vw);
@@ -110,17 +139,176 @@
   height: calc(100svh - var(--header-h));
 }
 
-/* Rests on the lit sand at the foot of the light column: 104px from the bottom,
-   but never higher than 16px under the subtitle (short landscape phones). */
+/* Buttons + scroll cue. This block runs from 16px under the subtitle to 10px
+   above the bottom of the screen; inside it the buttons rest on the lit sand
+   (104px from the bottom, as before) with the scroll cue under them. Where the
+   block is too short for the cue (short landscape screens, small phones), the
+   cue hides and the buttons center in the room left: nothing ever overlaps. */
 .hero__cta {
   position: absolute;
-  top: max(
-    100% - 104px - 54px,
-    var(--hero-line2-top) + var(--hero-sub-gap) + var(--hero-sub-size) * 1.5 + 16px - var(--header-h)
+  top: calc(
+    var(--hero-line2-top) + var(--hero-sub-gap) + var(--hero-sub-size) * 1.5 * var(--hero-sub-lines) +
+      16px - var(--header-h)
   );
+  bottom: 10px;
   inset-inline: 0;
-  width: max-content;
-  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: var(--gutter);
+  container: hero-cta / size;
+  pointer-events: none; /* only the links take clicks (Skip lies under this block) */
+}
+
+.hero__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.hero-button,
+.scroll-cue {
+  pointer-events: auto;
+}
+
+.hero-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition:
+    filter 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out),
+    background-color 0.25s var(--ease-out);
+}
+
+.hero-button--primary {
+  padding: 0 30px;
+  background: linear-gradient(135deg, var(--hero-button-top), var(--hero-button-bottom));
+  color: var(--hero-button-ink);
+  font-weight: 500;
+  box-shadow: 0 8px 30px rgb(var(--shadow-rgb) / 0.45);
+}
+
+.hero-button--primary:hover {
+  color: var(--hero-button-ink);
+  filter: brightness(1.08);
+  box-shadow: 0 0 34px rgb(var(--hero-button-glow-rgb) / 0.38);
+}
+
+.hero-button--secondary {
+  padding: 0 26px;
+  border: 1px solid rgb(var(--hero-cream-rgb) / 0.38);
+  background-color: rgb(var(--hero-glass-rgb) / 0.4);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: rgb(var(--hero-cream-rgb));
+  font-weight: 400;
+}
+
+.hero-button--secondary:hover {
+  border-color: rgb(var(--hero-cream-rgb) / 0.7);
+  background-color: rgb(var(--hero-glass-hover-rgb) / 0.55);
+  color: rgb(var(--hero-cream-rgb));
+}
+
+.hero-button:focus-visible {
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+/* "SCROLL" and a gold dot sliding down a thin line. 104 - 22 - 61 = 21px under
+   the buttons, 22px above the bottom of the screen. */
+.scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 21px 0 12px;
+  color: rgb(var(--hero-cue-rgb) / 0.75);
+  font: 400 11px/1 var(--font-body);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.scroll-cue:hover {
+  color: rgb(var(--hero-cue-rgb));
+}
+
+.scroll-cue__label {
+  padding-left: 0.34em; /* the letter-spacing after the last letter: keeps it centered */
+}
+
+.scroll-cue__line {
+  position: relative;
+  width: 1px;
+  height: 40px;
+  overflow: hidden;
+  background: rgb(var(--hero-cue-line-rgb) / 0.28);
+}
+
+.scroll-cue__line i {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 3px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--hero-cue-dot);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-cue__line i {
+    animation: scroll-cue-dot 2.2s ease-in-out infinite;
+  }
+}
+
+/* Reduced motion: the dot rests in the middle of the line. */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue__line i {
+    top: 15px;
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-cue-dot {
+  0% { transform: translateY(-10px); opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { transform: translateY(40px); opacity: 0; }
+}
+
+/* Narrow: the buttons stack (one per line, same width). */
+@container hero-cta (max-width: 419px) {
+  .hero__buttons {
+    flex-direction: column;
+    align-items: stretch;
+    width: min(100%, 280px);
+  }
+}
+
+/* Too short for the cue: hide it, center the buttons in the room left.
+   Room needed = buttons + 21 + 61 (cue) + 12: one row 146px, stacked 212px. */
+@container hero-cta (max-height: 145px) {
+  .scroll-cue { display: none; }
+  .hero__buttons { margin-block: auto; }
+}
+
+@container hero-cta (max-width: 419px) and (max-height: 211px) {
+  .scroll-cue { display: none; }
+  .hero__buttons { margin-block: auto; }
 }
 
 /* --- Work: laptop + caption -------------------------------------------- */

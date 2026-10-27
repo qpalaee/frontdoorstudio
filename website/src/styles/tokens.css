@@ -36,6 +36,22 @@
   --light-core: #fff1d9; /* the hottest point of a light */
   --light-hot: #fff8ec;
 
+  /* Hero (first screen) */
+  --hero-line-color: #f6ecdc;
+  --hero-sub-rgb: 240 228 210;
+  --hero-shade-rgb: 6 3 1;
+  --hero-button-top: #f5dcac;
+  --hero-button-bottom: #c99a5b;
+  --hero-button-ink: #1a1008;
+  --hero-button-glow-rgb: 232 182 112;
+  --hero-cream-rgb: 241 228 207; /* secondary button */
+  --hero-cue-rgb: 236 222 200; /* scroll cue label */
+  --hero-cue-line-rgb: 226 192 141;
+  --hero-cue-dot: #f0cf98;
+  --hero-night-rgb: 5 3 2; /* vignette and bottom fade */
+  --hero-glass-rgb: 10 6 3;
+  --hero-glass-hover-rgb: 20 12 6;
+
   /* Gradients */
   --grad-heading: linear-gradient(180deg, #fff 0%, #fff6e8 60%, #f2c995 100%);
   --word-top: #fff6e6; /* the giant SERVICES word */

@@ -1,5 +1,5 @@
-/* Hero title: "We OPEN doors for brands."
-   OPEN is the SVG from hero-title.js. The two small lines are HTML. */
+/* Hero title: "OPEN the door to more clients."
+   OPEN is the SVG from hero-title.js. The line under it and the subtitle are HTML. */
 
 /* The SVG lies exactly over the photo and inherits its intro scale (1.05 -> 1). */
 .hero-title-svg {
@@ -11,14 +11,14 @@
 }
 
 .hero__title {
-  /* The h1 is a wrapper for the two lines; OPEN itself is read from .sr-only. */
+  /* The h1 holds the line; OPEN itself is read from .sr-only (the SVG is decorative). */
   position: absolute;
   inset: 0;
   margin: 0;
   pointer-events: none;
   font-family: var(--font-body);
   font-weight: 300;
-  color: var(--gold-white);
+  color: var(--hero-line-color);
   text-align: center;
 }
 
@@ -26,15 +26,23 @@
   position: absolute;
   left: 0;
   right: 0;
+  top: var(--hero-line2-top); /* just under the horizon */
   font-size: var(--hero-line-size);
   letter-spacing: 0.02em;
   line-height: 1.1;
+  text-shadow: 0 2px 20px rgb(var(--shadow-rgb) / 0.65);
 }
 
-/* "We" sits above the word, "doors for brands." just under the horizon.
-   These match the desktop photo; the portrait values are in the media query below. */
-.hero__title-line--top { top: 25%; }
-.hero__title-line--bottom { top: var(--hero-line2-top); }
+/* Soft dark glow behind the line and the subtitle, from just under the horizon. */
+.hero__shade {
+  position: absolute;
+  top: calc(var(--hero-line2-top) - 2svh);
+  left: 28%;
+  width: 44%;
+  height: 24svh;
+  background: radial-gradient(closest-side, rgb(var(--hero-shade-rgb) / 0.6), rgb(var(--hero-shade-rgb) / 0));
+  pointer-events: none;
+}
 
 .hero__subtitle {
   position: absolute;
@@ -44,31 +52,28 @@
   margin: 0;
   padding-inline: 16px;
   font-family: var(--font-body);
-  font-weight: 300;
+  font-weight: 400;
   font-size: var(--hero-sub-size);
   line-height: 1.5;
   letter-spacing: 0.02em;
-  color: var(--ink-2);
-  opacity: 0.85;
+  color: rgb(var(--hero-sub-rgb) / 0.9);
   text-align: center;
-  /* keeps the line readable where it crosses the bright wedge on the sand */
-  text-shadow: 0 0 10px rgb(var(--shadow-rgb) / 0.9), 0 0 22px rgb(var(--shadow-rgb) / 0.7);
+  text-shadow: 0 1px 14px rgb(var(--shadow-rgb) / 0.8);
 }
 
 /* Same query as the portrait <source> in index.html. */
 @media (orientation: portrait) {
   .hero {
-    --hero-line-size: clamp(1.25rem, 6.2vw, 2rem);
+    --hero-line-size: clamp(1.5rem, 6.2vw, 2rem);
     --hero-sub-size: clamp(0.875rem, 3.6vw, 1rem);
-    /* The lines are bigger here: the gap follows them, so the subtitle never
-       touches "doors for brands." (it did at 768x1024). */
+    /* The line is bigger here: the gap follows it, so the subtitle never touches it. */
     --hero-sub-gap: calc(var(--hero-line-size) * 1.4);
+    --hero-sub-lines: 2; /* the subtitle wraps (max 30ch) */
   }
-  /* Above the door, like on desktop (it sat on the door and its light before).
-     The door's top is at 35.7% of the photo's height when the photo fills the
-     height, higher when it fills the width (tablets): 50svh - 21.5vw. */
-  .hero__title-line--top {
-    top: calc(min(35.7svh, 50svh - 21.5vw) - 1.1em - 14px);
+  /* The text is wider than 44% of a phone: the shade follows it. */
+  .hero__shade {
+    left: 4%;
+    width: 92%;
   }
   .hero__subtitle {
     max-width: 30ch;

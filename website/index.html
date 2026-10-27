@@ -17,7 +17,7 @@
     <meta property="og:image" content="{{site.url}}/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="We OPEN doors for brands. A door of light in the desert, Frontdoor Studio." />
+    <meta property="og:image:alt" content="OPEN the door to more clients. A door of light in the desert, Frontdoor Studio." />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Frontdoor Studio · Websites and social media in Morocco" />
@@ -119,9 +119,8 @@
         </nav>
         <a class="site-header__contact" href="#contact">Contact</a>
         <!-- Phones: opens the menu below. Hidden without JS (it needs it). -->
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-menu-open>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-menu-open>
           <span class="menu-toggle__bars" aria-hidden="true"></span>
-          <span class="sr-only">Menu</span>
         </button>
       </div>
 
@@ -171,6 +170,17 @@
             fetchpriority="high"
           />
         </picture>
+        <!-- Hide the texture of the sand: edge vignette, bottom fade, film grain.
+             Above the photo, under the drawn slit, OPEN (added last by hero-title.js),
+             the dust and the text. They scale and fade with the photo. -->
+        <div class="scene__vignette"></div>
+        <div class="scene__fade"></div>
+        <svg class="scene__grain" width="100%" height="100%" preserveAspectRatio="none">
+          <filter id="scene-grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#scene-grain)" />
+        </svg>
         <svg class="door-ink door-ink--desktop" viewBox="0 0 3344 1882" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <defs>
             <linearGradient id="door-ink-grad-desktop" x1="0" y1="0" x2="0" y2="1">
@@ -220,18 +230,38 @@
         <!-- First screen: the heading sits in the sky, the button on the sand.
              They fade out together, so they share one wrapper. -->
         <div class="hero__intro" data-hero-intro>
-          <!-- "We OPEN doors for brands." The big OPEN is an SVG drawn on the photo
-               (src/hero-title.js). This box has the photo's size and position, so the
-               two lines and the subtitle can be placed in % of the photo. -->
+          <!-- "OPEN the door to more clients." The big OPEN is an SVG drawn on the
+               photo (src/hero-title.js), inside the photo layer so it moves with it; the
+               h1 reads it from the .sr-only word. This box has the photo's size and
+               position, so the line and the subtitle can be placed in % of the photo. -->
           <div class="hero__titlebox">
+            <!-- Dark glow behind the line and the subtitle: they sit on the brightest sand. -->
+            <div class="hero__shade" aria-hidden="true"></div>
             <h1 class="hero__title" id="hero-title">
-              <span class="hero__title-line hero__title-line--top" data-hero-reveal>We</span>
-              <span class="sr-only">open</span>
-              <span class="hero__title-line hero__title-line--bottom" data-hero-reveal>doors for brands.</span>
+              <span class="sr-only">Open</span>
+              <span class="hero__title-line" data-hero-reveal>the door to more clients.</span>
             </h1>
-            <p class="hero__subtitle" data-hero-reveal>Premium websites and social media in Morocco.</p>
+            <p class="hero__subtitle" data-hero-reveal>Premium websites and social media for Moroccan brands.</p>
           </div>
-          <a class="glass-button hero__cta" href="#contact">Start your site</a>
+
+          <!-- Buttons + scroll cue, from under the subtitle to the bottom of the screen.
+               The intro animates this block like the old button (.hero__cta). The scroll
+               cue hides itself where it doesn't fit (hero.css, container queries). -->
+          <div class="hero__cta">
+            <div class="hero__buttons">
+              <a class="hero-button hero-button--primary" href="#contact">
+                Start your site
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" />
+                </svg>
+              </a>
+              <a class="hero-button hero-button--secondary" href="#work">See our work</a>
+            </div>
+            <a class="scroll-cue" href="#work">
+              <span class="scroll-cue__label">Scroll</span>
+              <span class="scroll-cue__line" aria-hidden="true"><i></i></span>
+            </a>
+          </div>
           <!-- Only shown while the intro plays. -->
           <button class="intro-skip" type="button" data-intro-skip>Skip</button>
         </div>

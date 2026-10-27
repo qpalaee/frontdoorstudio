@@ -44,7 +44,7 @@ export function initIntro({ getLenis }) {
   const canvas = scene.querySelector('[data-hero-dust]');
   const skip = scene.querySelector('[data-intro-skip]');
   const header = document.querySelector('[data-site-header]'); // fixed, outside the scene
-  const titleLines = scene.querySelectorAll('[data-hero-reveal]'); // "We", "doors for brands.", subtitle
+  const titleLines = scene.querySelectorAll('[data-hero-reveal]'); // the line under OPEN, subtitle
   const button = scene.querySelector('.hero__cta');
   const slits = {
     portrait: scene.querySelector('.door-ink--mobile .door-ink__slit'),
@@ -192,10 +192,12 @@ export function initIntro({ getLenis }) {
             .addLabel('site', 3.0)
             .set(skip, { autoAlpha: 0 }, 'site')
             .to(header, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 'site')
+            // +0.15: "We" used to come first in this stagger (at +0.05). It is gone,
+            // so the line and the subtitle keep their own times (+0.15, +0.25).
             .to(
               titleLines,
               { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
-              'site+=0.05',
+              'site+=0.15',
             )
             .to(button, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 'site+=0.3');
 

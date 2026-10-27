@@ -8,6 +8,25 @@
 html {
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
+  /* A thin, dark scrollbar in the site's colors instead of the grey one.
+     Kept (not hidden): some people rely on it to see where they are. */
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--gold-light-rgb) / 0.25) var(--bg);
+}
+
+/* Safari (it ignores scrollbar-color). */
+html::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+html::-webkit-scrollbar-thumb {
+  border: 2px solid var(--bg);
+  border-radius: 8px;
+  background: rgb(var(--gold-light-rgb) / 0.25);
 }
 
 body {

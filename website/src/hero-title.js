@@ -1,5 +1,5 @@
 /**
- * Hero title: "We OPEN doors for brands."
+ * Hero title: "OPEN the door to more clients."
  *
  * The big word OPEN is drawn as SVG on top of the hero photo, in the photo's own
  * pixel coordinates, so it scales and crops exactly like the image (object-fit: cover).

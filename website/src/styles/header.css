@@ -276,13 +276,10 @@
     display: inline-flex;
   }
 
-  /* Logo on the left; Contact and the menu button together on the right. */
-  .site-header__inner {
-    gap: 12px;
-  }
-
-  .site-header__contact {
-    margin-left: auto;
+  /* Contact is in the menu (and in the hero buttons): only the menu button here.
+     Without JS there is no menu, so Contact stays. */
+  .js .site-header__contact {
+    display: none;
   }
 }
 
